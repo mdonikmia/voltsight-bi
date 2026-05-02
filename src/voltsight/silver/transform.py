@@ -39,12 +39,13 @@ def create_synthetic_ward_mapping(n_wards: int = 500) -> pd.DataFrame:
 
     ward_data = []
     for i in range(n_wards):
-        postcode_prefix = f"BS{i % 99}"
-        ward_name = f"Ward_{i % 20}"
+        # FIXED: Use unique postcode prefixes (BS0-BS499, not BS0-BS98 repeated)
+        postcode_prefix = f"BS{i}"
+        ward_name = f"Ward_{i % 50}"
         lsoa = f"E01{i:06d}"
         la = "Bristol" if i % 2 == 0 else "South Gloucestershire"
-        lat = 51.45 + np.random.normal(0, 0.1)
-        lng = -2.58 + np.random.normal(0, 0.1)
+        lat = 51.45 + np.random.normal(0, 0.05)
+        lng = -2.58 + np.random.normal(0, 0.05)
         pop = int(np.random.uniform(5000, 15000))
 
         ward_data.append({
