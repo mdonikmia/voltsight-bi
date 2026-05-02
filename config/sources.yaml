@@ -1,0 +1,57 @@
+# VoltSight BI — Data Source Configuration
+#
+# This file defines every external data source used by the Bronze layer.
+# Decoupling configuration from code is a professional engineering practice:
+#   - URLs change without code edits
+#   - New sources added by editing YAML, not Python
+#   - Easy to diff in code review
+#
+# Each source has:
+#   url         : the canonical download URL
+#   format      : csv | geojson | json (drives how we load + validate)
+#   filename    : output filename (DATE prefix added automatically)
+#   description : human-readable purpose of this source
+#   license     : license string (cite this in README)
+#   user_agent  : custom UA if the source rejects default requests UA
+
+sources:
+
+  ncr_chargers:
+    url: "https://chargepoints.dft.gov.uk/api/retrieve/registry/format/csv"
+    format: csv
+    filename: "ncr_chargers.csv"
+    description: "UK National Chargepoint Registry — every public EV charger in the UK with location, connector type, power rating, and operator."
+    license: "Open Government Licence v3.0"
+    user_agent: "VoltSight-BI/1.0 (Portfolio research project; contact: mdonikmia88@gmail.com)"
+    expected_min_rows: 30000
+    primary_key: "chargeDeviceID"
+
+  ons_postcode_directory:
+    url: "https://www.arcgis.com/sharing/rest/content/items/265778cd85ca4a45a3a041b0c8232fc1/data"
+    format: csv
+    filename: "ons_postcode_directory.csv"
+    description: "ONS Postcode Directory — every UK postcode mapped to ward, LSOA, local authority, and country."
+    license: "Open Government Licence v3.0"
+    user_agent: "VoltSight-BI/1.0"
+    expected_min_rows: 1000000
+    primary_key: "pcd"
+    notes: "Large file (~200MB). Consider downloading once and caching. URL may need updating quarterly — check geoportal.statistics.gov.uk for latest."
+
+  dvla_ev_registrations:
+    url: "https://www.gov.uk/government/statistical-data-sets/vehicle-licensing-statistics-data-files"
+    format: manual_download
+    filename: "dvla_veh0145_ulev_by_la.csv"
+    description: "DVLA quarterly statistics on Ultra Low Emission Vehicles registered by local authority. Used as the demand signal in the Site Priority Score."
+    license: "Open Government Licence v3.0"
+    expected_min_rows: 400
+    primary_key: "LA_Code"
+    notes: "Manual download only — DVLA does not provide a stable direct download URL. Download VEH0145 from the page and save to data/bronze/dvla_ev_registrations/"
+
+# === Pipeline behaviour ===
+pipeline:
+  bronze_dir: "data/bronze"
+  retry_attempts: 4
+  retry_initial_wait_seconds: 2
+  retry_max_wait_seconds: 60
+  http_timeout_seconds: 180
+  date_format: "%Y-%m-%d"

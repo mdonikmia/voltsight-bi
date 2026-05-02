@@ -1,0 +1,56 @@
+# VoltSight BI — .gitignore
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.venv/
+venv/
+env/
+
+# === Data files ===
+# Bronze data is large and reproducible — don't commit
+data/bronze/*/
+!data/bronze/.gitkeep
+
+# Silver/Gold are derived — also not committed
+data/silver/
+data/gold/
+
+# But DO commit manifest files (small, important for lineage)
+!data/bronze/**/_manifest.json
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === Secrets ===
+.env
+.env.local
+*.key
+config/secrets.yaml
+
+# === Power BI ===
+# .pbix files ARE committed (small, important deliverable)
+# But intermediate Power BI files aren't
+*.pbix.bak
+
+# === Logs ===
+logs/
+*.log
+
+# === Jupyter ===
+.ipynb_checkpoints/
