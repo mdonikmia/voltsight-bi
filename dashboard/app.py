@@ -46,7 +46,10 @@ BASE = dict(paper_bgcolor="rgba(0,0,0,0)",plot_bgcolor="rgba(10,22,40,0.6)",
 AXS = dict(gridcolor="rgba(30,58,95,0.5)",linecolor="rgba(30,58,95,0.5)",tickfont=dict(color="#8aaccc"))
 
 def layout(fig, h=300, **kw):
-    fig.update_layout(**BASE, height=h, xaxis=AXS, yaxis=AXS, **kw)
+    # Merge AXS defaults with any overrides passed in kw
+    xax = {**AXS, **kw.pop("xaxis", {})}
+    yax = {**AXS, **kw.pop("yaxis", {})}
+    fig.update_layout(**BASE, height=h, xaxis=xax, yaxis=yax, **kw)
 def y2(color): return dict(overlaying="y",side="right",gridcolor="rgba(0,0,0,0)",linecolor="rgba(0,0,0,0)",tickfont=dict(color=color))
 def kpi(col,icon,lbl,val,sub,clr): col.markdown(f'<div class="kpi"><div class="kpi-bar" style="background:{clr}"></div><div class="kpi-icon">{icon}</div><div class="kpi-lbl">{lbl}</div><div class="kpi-val">{val}</div><div class="kpi-sub">{sub}</div></div>',unsafe_allow_html=True)
 def ins(body,title="💡 Insight"): st.markdown(f'<div class="ins"><div class="ins-t">{title}</div><div class="ins-b">{body}</div></div>',unsafe_allow_html=True)
