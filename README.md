@@ -1,164 +1,273 @@
-# VoltSight BI
+<div align="center">
 
-> **Intelligent planning of EV charging infrastructure.**
->
-> A business intelligence system that helps network operators and city planners decide where to install the next charger, what type it should be, and which existing sites need urgent attention.
+# ⚡ VoltSight BI
+
+### EV Charging Infrastructure Analytics Platform
+
+[![Python](https://img.shields.io/badge/Python-3.13-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.32+-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![Plotly](https://img.shields.io/badge/Plotly-6.7+-3F4F75?style=for-the-badge&logo=plotly&logoColor=white)](https://plotly.com)
+[![Pandas](https://img.shields.io/badge/Pandas-2.0+-150458?style=for-the-badge&logo=pandas&logoColor=white)](https://pandas.pydata.org)
+[![License](https://img.shields.io/badge/License-MIT-00C48C?style=for-the-badge)](LICENSE)
+
+**"Where should the next EV charger be installed — and which sites need fixing first?"**
+
+[📊 Live Dashboard](https://voltsight-bi.streamlit.app) · [📖 Documentation](#documentation) · [🚀 Quick Start](#quick-start)
+
+</div>
 
 ---
 
-## The Question VoltSight Answers
+## 📌 Project Overview
 
-> *Where should the next EV charger be installed, what type should it be, and which existing sites are failing first?*
+VoltSight BI is a **production-grade business intelligence platform** for EV charging infrastructure analytics. Built on a **Medallion Architecture** (Bronze → Silver → Gold), it transforms raw UK chargepoint registry data into actionable insights via an interactive Streamlit dashboard.
 
-Every layer of this system exists to answer that question.
+**Core business question:** *Given 52,847 UK charger locations, 618,000+ simulated sessions, and real demographic data — where should operators invest next, and which existing sites need immediate attention?*
 
 ---
 
-## Architecture (Medallion Pattern)
+## 🏗️ Architecture
 
 ```
-External sources  →  Bronze (raw)  →  Silver (clean)  →  Gold (modelled)  →  Power BI + Claude AI
+External Sources
+      │
+      ▼
+┌─────────────────┐
+│  BRONZE LAYER   │  Raw ingestion · SHA256 integrity · Manifest logging
+│  (Immutable)    │  Source: UK National Chargepoint Registry (DfT)
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  SILVER LAYER   │  Cleaning · Geo-enrichment · Feature engineering
+│  (Validated)    │  Postcode → Ward/LSOA · EV adoption signals
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│   GOLD LAYER    │  Star schema · KPIs · Site Priority Score
+│  (Analytical)   │  618,223 sessions · 182,500 availability records
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│    DASHBOARD    │  4-page Streamlit app · Live filters · AI insights
+│  (Serve Layer)  │  Dark theme · Plotly charts · Interactive sliders
+└─────────────────┘
 ```
 
-| Layer | Purpose | Status |
-|---|---|---|
-| **Bronze** | Immutable raw ingestion with provenance | ✅ Complete |
-| **Silver** | Cleaned, deduplicated, geo-enriched | ✅ Complete |
-| **Gold** | Star schema with KPIs and Site Priority Score | ✅ Complete |
-| **Serve** | Power BI dashboard + Claude AI insights layer | ⏳ Planned |
+---
+
+## 📊 Dashboard Pages
+
+| Page | Description |
+|------|-------------|
+| **⚡ Network Overview** | KPI cards, monthly sessions trend, peak hour heatmap, site type revenue |
+| **🗺️ Location Intelligence** | Priority score map, EV demand vs supply scatter, local authority breakdown |
+| **🔧 Operations & Reliability** | Network uptime %, fault type analysis, SLA tracking, monthly fault trend |
+| **📍 Expansion Planner** | Adjustable priority weights, ranked site recommendations, score breakdown |
 
 ---
 
-## Tech Stack
+## 🎯 Site Priority Score
 
-- **Python 3.10+** — ingestion, transformation, simulation
-- **Pandas + PyArrow** — data handling and parquet I/O
-- **GeoPandas + Shapely** — geospatial enrichment
-- **Tenacity** — production-grade retry logic
-- **PyYAML** — externalised configuration
-- **Pytest** — automated quality checks
-- **Power BI** — visualisation (4-page dashboard)
-- **Streamlit + Anthropic API** — natural-language insights layer
-- **SQL** (SQLite for portfolio; PostgreSQL-compatible) — Gold layer queries
+The core analytical model ranks locations for new charger installation:
+
+```
+Score = Demand(0.30) + Supply Gap(0.25) + Road Access(0.20)
+      + Coverage Deficit(0.15) + Utilisation Signal(0.10)
+```
+
+| Component | Weight | Signal |
+|-----------|--------|--------|
+| EV Demand | 30% | EV registrations + population density |
+| Supply Gap | 25% | Chargers per EV (lower = bigger gap) |
+| Road Access | 20% | Road type + competitor proximity |
+| Coverage Deficit | 15% | Distance to nearest charger |
+| Utilisation | 10% | Existing charger occupancy |
+
+Weights are **fully adjustable** via dashboard sliders — enabling operators to align recommendations with business strategy in real time.
 
 ---
 
-## Repository Structure
+## 📁 Project Structure
 
 ```
 voltsight-bi/
-├── config/
-│   └── sources.yaml             # All external data sources defined here
-├── src/voltsight/               # Importable Python package
-│   ├── config.py                # Typed config loader
-│   ├── logger.py                # Structured logging
-│   ├── http_client.py           # Retry-wrapped downloads
-│   ├── manifest.py              # Data lineage records
-│   └── bronze/
-│       ├── ingest.py            # Bronze ingestion logic
-│       └── validate.py          # Bronze quality checks
+├── dashboard/
+│   ├── app.py                  # Streamlit dashboard (4 pages)
+│   └── requirements.txt        # Dashboard dependencies
+├── src/voltsight/
+│   ├── bronze/
+│   │   ├── ingest.py           # Retry-wrapped data ingestion
+│   │   └── validate.py         # Quality checks
+│   ├── silver/
+│   │   └── transform.py        # Cleaning + geo-enrichment
+│   └── gold/
+│       ├── simulate.py         # 12-month session simulation
+│       └── priority_score.py   # Site Priority Score logic
 ├── scripts/
-│   ├── ingest_bronze.py         # Run: download all Bronze sources
-│   └── validate_bronze.py       # Run: quality-check all Bronze sources
-├── tests/
-│   └── test_bronze.py           # Unit tests for Bronze logic
+│   ├── ingest_bronze.py        # Run bronze ingestion
+│   ├── transform_to_silver.py  # Run silver transformation
+│   ├── build_gold.py           # Build star schema + KPIs
+│   ├── validate_bronze.py      # Validate bronze layer
+│   ├── validate_silver.py      # Validate silver layer
+│   └── validate_gold.py        # Validate gold layer
+├── sql/
+│   └── kpi_queries.sql         # Power BI-compatible KPI queries
 ├── docs/
-│   └── BRONZE_LAYER.md          # Detailed docs per layer
-├── data/
-│   └── bronze/                  # (Gitignored — created by ingestion)
-├── requirements.txt
-├── .gitignore
-└── README.md                    # This file
+│   ├── BRONZE_LAYER.md
+│   ├── SILVER_LAYER.md
+│   └── GOLD_LAYER.md
+├── tests/
+│   └── test_bronze.py          # 9 unit tests
+├── .streamlit/
+│   └── config.toml             # Dark theme configuration
+├── config/
+│   └── sources.yaml            # External data source config
+└── requirements.txt            # Root dependencies
 ```
 
 ---
 
-## Running the Bronze Layer
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.10+
+- Git
+
+### Installation
 
 ```bash
-# 1. Install dependencies (preferably in a virtual environment)
-python -m venv .venv
-source .venv/bin/activate          # On Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+# Clone the repository
+git clone https://github.com/mdonikmia/voltsight-bi.git
+cd voltsight-bi
 
-# 2. Ingest all configured sources
+# Create virtual environment
+python -m venv .venv
+.venv\Scripts\activate  # Windows
+source .venv/bin/activate  # Mac/Linux
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+### Run the Pipeline
+
+```bash
+# Step 1: Ingest Bronze layer
 python scripts/ingest_bronze.py
 
-# 3. Validate the ingested data
-python scripts/validate_bronze.py
+# Step 2: Transform to Silver
+python scripts/transform_to_silver.py
 
-# 4. Run tests
-pytest tests/ -v
+# Step 3: Build Gold layer (star schema + KPIs)
+python scripts/build_gold.py
+
+# Step 4: Launch Dashboard
+python -m streamlit run dashboard/app.py
 ```
 
-Output appears under `data/bronze/<source_key>/` with both CSV and Parquet copies plus a `_manifest.json` lineage record.
+### Or use the one-click launcher (Windows)
 
-See [`docs/BRONZE_LAYER.md`](docs/BRONZE_LAYER.md) for the engineering rationale behind every decision in this layer.
-
----
-
-## Engineering Standards
-
-This project follows production-grade practices, not student-grade ones:
-
-- **Type-hinted Python** throughout (`from __future__ import annotations`)
-- **Structured logging** rather than print statements
-- **External configuration** via YAML — no hardcoded URLs or paths
-- **Retry-with-backoff** for all network operations (`tenacity`)
-- **SHA256 file hashing** for data integrity verification
-- **Idempotent operations** — safe to re-run without side effects
-- **Fail-soft** error handling — one source failing does not block others
-- **Unit tests** with pytest — focused on pure logic
-- **Manifest files** for every dataset — full data lineage
+```bash
+run_dashboard.bat
+```
 
 ---
 
-## Roadmap
+## 🔢 Data Scale
 
-- [x] **Part 1** — Bronze layer (raw ingestion + validation)
-- [ ] **Part 2** — Silver layer (cleaning + geo-enrichment)
-- [ ] **Part 3** — Simulation script (12 months of session data)
-- [ ] **Part 4** — Gold layer (star schema in SQL)
-- [ ] **Part 5** — KPI queries (uptime, utilization, congestion, revenue)
-- [ ] **Part 6** — Site Priority Score model
-- [ ] **Part 7** — Power BI dashboard (4 pages, DAX)
-- [ ] **Part 8** — Claude AI insights layer (Streamlit app)
-- [ ] **Part 9** — Documentation, executive summary, Loom walkthrough
+| Layer | Records | Description |
+|-------|---------|-------------|
+| Bronze | 52,847 | Raw UK charger locations (National Chargepoint Registry) |
+| Silver | 52,847 | Cleaned + geo-enriched + feature-engineered |
+| DIM_CHARGER | 500 | Charger dimension (type, power, location) |
+| DIM_LOCATION | 99 | Location dimension (demographics, competition) |
+| DIM_DATE | 365 | Calendar dimension (weekday, peak, season) |
+| FACT_SESSIONS | 618,223 | Simulated charging sessions (2025) |
+| FACT_AVAILABILITY | 182,500 | Daily uptime records |
+| PRIORITY_SCORES | 99 | Ranked expansion recommendations |
 
 ---
 
-## Author
+## 🛠️ Engineering Highlights
 
-**MD Onik Mia** — BSc (Hons) Information Technology, University of the West of England, Bristol (2026)
+- **Idempotent ingestion** — skip if today's file already exists
+- **SHA256 hashing** — file integrity verification on every pull
+- **Tenacity retry logic** — exponential backoff for HTTP requests
+- **Fail-soft pipeline** — one source failing doesn't block others
+- **Structured logging** — timestamped, levelled logs (not print statements)
+- **External YAML config** — URLs/sources not hardcoded
+- **Parquet + CSV** — both formats for performance and human readability
+- **Data lineage manifest** — tracks source, timestamp, row count per file
+- **9 unit tests** — covering ingestion, validation, and schema checks
+
+---
+
+## 📈 Key KPIs
+
+```sql
+-- Average network uptime
+SELECT AVG(uptime_pct) FROM fact_availability;  -- Target: ≥95%
+
+-- Revenue by charger type
+SELECT charger_type, SUM(revenue_gbp)
+FROM fact_sessions JOIN dim_charger USING (charger_id)
+WHERE status = 'completed'
+GROUP BY charger_type;
+
+-- Top expansion sites
+SELECT postcode, priority_score, priority_rank
+FROM gold_priority_scores
+ORDER BY priority_rank LIMIT 10;
+```
+
+---
+
+## 🧰 Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Language | Python 3.13 |
+| Dashboard | Streamlit + Plotly |
+| Data Processing | Pandas, PyArrow |
+| Storage | Parquet (fast) + CSV (readable) |
+| HTTP | Requests + Tenacity |
+| Config | PyYAML |
+| Testing | Pytest |
+| Version Control | Git + GitHub |
+| Deployment | Streamlit Cloud |
+
+---
+
+## 📚 Documentation
+
+- [Bronze Layer](docs/BRONZE_LAYER.md) — Raw ingestion design
+- [Silver Layer](docs/SILVER_LAYER.md) — Cleaning and enrichment
+- [Gold Layer](docs/GOLD_LAYER.md) — Star schema and KPI definitions
+
+---
+
+## 👤 Author
+
+**MD Onik Mia**
+BSc Information Technology (Hons), University of the West of England Bristol, 2026
+
 Specialising in data analytics, machine learning, and cybersecurity.
-Eligible for the UK Graduate Route visa (2 years, no sponsorship needed).
 
-📫 mdonikmia88@gmail.com
-🔗 [GitHub](https://github.com/mdonikmia)
-💼 [LinkedIn](https://www.linkedin.com/in/md-onik-mia-643322385/)
-
----
-
-## License
-
-Code: MIT.
-External data sources retain their original licenses (Open Government Licence v3.0 for UK government data).
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat&logo=linkedin)](https://www.linkedin.com/in/md-onik-mia-643322385/)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat&logo=github)](https://github.com/mdonikmia)
+[![Email](https://img.shields.io/badge/Email-Contact-D14836?style=flat&logo=gmail)](mailto:mdonikmia88@gmail.com)
 
 ---
 
-## Gold Layer — Star Schema
+## 📄 License
 
-| Table | Rows | Description |
-|---|---|---|
-| `dim_charger` | 500 | Charger attributes (type, power, location) |
-| `dim_location` | 99 | Location enrichment (population, EV registrations) |
-| `dim_date` | 365 | Calendar dimension (weekday, peak hours, season) |
-| `fact_sessions` | 618,223 | Simulated charging sessions (12 months) |
-| `fact_availability` | 182,500 | Daily charger uptime records |
-| `gold_priority_scores` | 99 | **Site Priority Scores** — ranked expansion targets |
+This project is licensed under the MIT License.
 
-### Site Priority Score Formula
-```
-Score = demand(0.30) + supply_gap(0.25) + road_access(0.20)
-      + coverage_deficit(0.15) + utilization(0.10)
-```
+---
+
+<div align="center">
+<sub>Built with ⚡ and Python · VoltSight BI 2025</sub>
+</div>
