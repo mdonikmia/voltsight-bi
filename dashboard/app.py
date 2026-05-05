@@ -354,8 +354,12 @@ def main():
                             line=dict(color="rgba(0,0,0,0)")),
                 hovertemplate="<b>%{x}:00</b><br>%{y:,} sessions<extra></extra>"))
             L(fig3,240, xa=dict(**AX,tickmode="linear",tick0=0,dtick=4), bargap=0.12)
-            fig3.add_annotation(x=8,y=hr["n"].max()*0.95,text="Morning<br>Rush",showarrow=False,font=dict(color="#00c48c",size=9))
-            fig3.add_annotation(x=18,y=hr["n"].max()*0.95,text="Evening<br>Rush",showarrow=False,font=dict(color="#00c48c",size=9))
+            fig3.add_annotation(x=8,y=hr["n"].max()*0.88,text="⬆ Morning Rush",showarrow=False,
+                font=dict(color="#ffffff",size=10,family="Inter"),
+                bgcolor="rgba(0,196,140,0.25)",bordercolor="#00c48c",borderwidth=1,borderpad=4)
+            fig3.add_annotation(x=18,y=hr["n"].max()*0.88,text="⬆ Evening Rush",showarrow=False,
+                font=dict(color="#ffffff",size=10,family="Inter"),
+                bgcolor="rgba(0,196,140,0.25)",bordercolor="#00c48c",borderwidth=1,borderpad=4)
             st.plotly_chart(fig3, use_container_width=True)
 
         with r2c2:
