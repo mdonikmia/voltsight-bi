@@ -89,6 +89,10 @@ header[data-testid="stHeader"] { display: none !important; }
 ::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #00c48c; }
 
+/* Force sidebar always visible */
+[data-testid="collapsedControl"] { display: none !important; }
+section[data-testid="stSidebar"] { transform: none !important; min-width: 260px !important; }
+
 /* ── COMPONENTS ── */
 .kpi{
     background: linear-gradient(145deg, #0c1e35 0%, #0f2540 100%);
