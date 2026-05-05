@@ -173,7 +173,7 @@ def render_sidebar():
 
         page = st.radio(
             "Navigation",
-            ["⚡ Network Overview", "🗺️ Location Intelligence",
+            ["📊 Network Overview", "🗺️ Location Intelligence",
              "🔧 Operations", "📍 Expansion Planner"],
             label_visibility="collapsed",
         )
@@ -200,7 +200,7 @@ def kpi_card(col, label: str, value: str, delta: str = "", colour: str = "#00C48
 
 # ── Page 1: Network Overview ────────────────────────────────────────────────
 def page_network_overview(data: dict):
-    st.title("⚡ Network Overview")
+    st.title("📊 Network Overview")
     st.caption("UK EV Charging Network — Full Year 2025")
     st.divider()
 
@@ -537,7 +537,7 @@ def main():
     data = load_gold_data()
     page = render_sidebar()
 
-    if page == "⚡ Network Overview":
+    if page == "📊 Network Overview":
         page_network_overview(data)
     elif page == "🗺️ Location Intelligence":
         page_location_intelligence(data)
