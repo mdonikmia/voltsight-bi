@@ -167,8 +167,8 @@ CHARGER_COLORS = {
 # ── Sidebar ─────────────────────────────────────────────────────────────────
 def render_sidebar():
     with st.sidebar:
-        st.image("https://img.icons8.com/fluency/96/electric-vehicle.png", width=60)
-        st.title("VoltSight BI")
+        
+        st.markdown("# ⚡ VoltSight BI")
         st.caption("EV Infrastructure Analytics")
         st.divider()
 
