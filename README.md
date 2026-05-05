@@ -23,8 +23,8 @@ External sources  →  Bronze (raw)  →  Silver (clean)  →  Gold (modelled)  
 | Layer | Purpose | Status |
 |---|---|---|
 | **Bronze** | Immutable raw ingestion with provenance | ✅ Complete |
-| **Silver** | Cleaned, deduplicated, geo-enriched | 🚧 Next |
-| **Gold** | Star schema with KPIs and Site Priority Score | ⏳ Planned |
+| **Silver** | Cleaned, deduplicated, geo-enriched | ✅ Complete |
+| **Gold** | Star schema with KPIs and Site Priority Score | ✅ Complete |
 | **Serve** | Power BI dashboard + Claude AI insights layer | ⏳ Planned |
 
 ---
@@ -143,3 +143,22 @@ Eligible for the UK Graduate Route visa (2 years, no sponsorship needed).
 
 Code: MIT.
 External data sources retain their original licenses (Open Government Licence v3.0 for UK government data).
+
+---
+
+## Gold Layer — Star Schema
+
+| Table | Rows | Description |
+|---|---|---|
+| `dim_charger` | 500 | Charger attributes (type, power, location) |
+| `dim_location` | 99 | Location enrichment (population, EV registrations) |
+| `dim_date` | 365 | Calendar dimension (weekday, peak hours, season) |
+| `fact_sessions` | 618,223 | Simulated charging sessions (12 months) |
+| `fact_availability` | 182,500 | Daily charger uptime records |
+| `gold_priority_scores` | 99 | **Site Priority Scores** — ranked expansion targets |
+
+### Site Priority Score Formula
+```
+Score = demand(0.30) + supply_gap(0.25) + road_access(0.20)
+      + coverage_deficit(0.15) + utilization(0.10)
+```
