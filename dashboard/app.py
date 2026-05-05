@@ -1,6 +1,4 @@
-"""
-VoltSight BI — Professional Dashboard v2
-"""
+"""VoltSight BI — World-Class Professional Dashboard"""
 from __future__ import annotations
 from pathlib import Path
 import pandas as pd
@@ -13,40 +11,86 @@ st.set_page_config(page_title="VoltSight BI", page_icon="⚡", layout="wide")
 
 st.markdown("""
 <style>
-.stApp{background-color:#0a0f1e}
-section[data-testid="stSidebar"]{background-color:#0d1426;border-right:1px solid #1e3a5f}
-header[data-testid="stHeader"]{background:transparent}
-.kpi-card{background:linear-gradient(135deg,#0d1f35,#1a2f4a);border:1px solid #1e3a5f;border-radius:16px;padding:24px;margin:8px 0;position:relative;overflow:hidden}
-.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0}
-.kpi-green::before{background:linear-gradient(90deg,#00c48c,#00e6a8)}
-.kpi-blue::before{background:linear-gradient(90deg,#2196f3,#64b5f6)}
-.kpi-orange::before{background:linear-gradient(90deg,#ff9800,#ffb74d)}
-.kpi-pink::before{background:linear-gradient(90deg,#e91e63,#f48fb1)}
-.kpi-label{color:#7a9cc4;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-.kpi-value{color:#fff;font-size:30px;font-weight:800;line-height:1.1;margin-bottom:4px}
-.kpi-delta{color:#7a9cc4;font-size:12px}
-[data-baseweb="tag"]{background-color:#1e3a5f !important}
-[data-baseweb="tag"] span{color:#ffffff !important}
-.stMultiSelect span{color:#c8d8ea !important}
-[data-testid="stMultiSelect"] div{color:#c8d8ea !important}
-div[data-baseweb="select"] span{color:#c8d8ea !important}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-.insight-card{background:linear-gradient(135deg,#0d1f35,#1a2f4a);border:1px solid #1e3a5f;border-left:4px solid #00c48c;border-radius:12px;padding:16px 20px;margin:12px 0}
-.insight-title{color:#00c48c;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
-.insight-text{color:#c8d8ea;font-size:14px;line-height:1.6}
-.page-title{font-size:34px;font-weight:900;color:#fff;margin-bottom:4px}
-.page-sub{color:#7a9cc4;font-size:14px;margin-bottom:20px}
-.sec-header{color:#fff;font-size:18px;font-weight:700;padding:8px 0 4px;border-bottom:1px solid #1e3a5f;margin-bottom:12px}
-#MainMenu,footer{visibility:hidden}
+* { font-family: 'Inter', sans-serif !important; }
+
+/* ── BACKGROUND ── */
+.stApp { background: #060d1a !important; }
+.stApp > div { background: #060d1a !important; }
+
+/* ── SIDEBAR ── */
+section[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0a1628 0%, #0d1f38 100%) !important;
+    border-right: 1px solid rgba(0,196,140,0.15) !important;
+    width: 260px !important;
+}
+section[data-testid="stSidebar"] * { color: #e2eaf4 !important; }
+section[data-testid="stSidebar"] .stRadio label {
+    color: #c8d8ea !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    padding: 4px 0 !important;
+}
+section[data-testid="stSidebar"] p { color: #e2eaf4 !important; }
+section[data-testid="stSidebar"] span { color: #e2eaf4 !important; }
+section[data-testid="stSidebar"] div { color: #e2eaf4 !important; }
+[data-testid="stRadio"] label span { color: #ffffff !important; font-size:14px !important; }
+[data-testid="stRadio"] div[role="radiogroup"] { gap: 4px !important; }
+[data-testid="stMarkdownContainer"] p { color: #e2eaf4 !important; }
+
+/* Filter labels */
+[data-testid="stMultiSelect"] label { color: #7a9cc4 !important; font-size:11px !important; font-weight:600 !important; text-transform:uppercase !important; letter-spacing:1px !important; }
+[data-baseweb="tag"] { background: rgba(0,196,140,0.2) !important; border: 1px solid rgba(0,196,140,0.4) !important; border-radius: 6px !important; }
+[data-baseweb="tag"] span { color: #00c48c !important; font-weight: 600 !important; }
+[data-baseweb="select"] { background: rgba(255,255,255,0.04) !important; border-color: rgba(255,255,255,0.1) !important; border-radius: 8px !important; }
+
+/* ── HIDE CLUTTER ── */
+header[data-testid="stHeader"] { background: transparent !important; }
+#MainMenu, footer, .stDeployButton { visibility: hidden !important; }
+[data-testid="stToolbar"] { display: none !important; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0a1628; }
+::-webkit-scrollbar-thumb { background: #1e3a5f; border-radius: 2px; }
+
+/* ── KPI CARDS ── */
+.kpi { background: linear-gradient(145deg, #0d1f38 0%, #112540 100%); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 22px 24px; position: relative; overflow: hidden; transition: all 0.3s ease; }
+.kpi:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+.kpi-bar { position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: 20px 20px 0 0; }
+.kpi-icon { font-size: 28px; margin-bottom: 10px; display: block; }
+.kpi-lbl { color: #5a7a9a; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+.kpi-val { color: #ffffff; font-size: 28px; font-weight: 800; line-height: 1; margin-bottom: 6px; letter-spacing: -0.5px; }
+.kpi-sub { color: #3a5a7a; font-size: 12px; font-weight: 500; }
+
+/* ── INSIGHT CARD ── */
+.insight { background: linear-gradient(135deg, rgba(0,196,140,0.08), rgba(0,196,140,0.03)); border: 1px solid rgba(0,196,140,0.25); border-left: 3px solid #00c48c; border-radius: 12px; padding: 16px 20px; margin: 16px 0; }
+.insight-t { color: #00c48c; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+.insight-b { color: #c8d8ea; font-size: 13px; line-height: 1.7; }
+
+/* ── PAGE HEADER ── */
+.pg-title { font-size: 32px; font-weight: 900; color: #ffffff; letter-spacing: -1px; margin-bottom: 2px; }
+.pg-sub { color: #3a5a7a; font-size: 13px; font-weight: 500; margin-bottom: 24px; }
+
+/* ── SECTION ── */
+.sec { color: #e2eaf4; font-size: 16px; font-weight: 700; margin: 20px 0 12px; display: flex; align-items: center; gap: 8px; }
+.sec::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(30,58,95,0.8), transparent); margin-left: 8px; }
+
+/* ── DATAFRAME ── */
+.stDataFrame { border-radius: 16px !important; overflow: hidden !important; }
+[data-testid="stDataFrame"] { background: #0d1f38 !important; border-radius: 16px !important; }
 </style>
 """, unsafe_allow_html=True)
 
 GOLD_DIR = Path(__file__).parent.parent / "data" / "gold"
-PALETTE = ["#00c48c","#2196f3","#ff9800","#e91e63","#9c27b0","#00bcd4"]
-CT_COLORS = {"AC_slow":"#4CAF50","AC_fast":"#2196F3","DC_rapid":"#FF9800","DC_ultra":"#E91E63"}
-BASE = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(13,31,53,0.5)",
-            font=dict(color="#c8d8ea"), margin=dict(l=0,r=0,t=30,b=0),
-            xaxis=dict(gridcolor="#1e3a5f"), yaxis=dict(gridcolor="#1e3a5f"))
+PALETTE = ["#00c48c","#2196f3","#ff9800","#e91e63","#9c27b0","#00bcd4","#ff5722"]
+CT_C = {"AC_slow":"#4CAF50","AC_fast":"#2196F3","DC_rapid":"#FF9800","DC_ultra":"#E91E63"}
+G = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(10,22,40,0.6)",
+         font=dict(color="#8aaccc", family="Inter, sans-serif", size=12),
+         margin=dict(l=0, r=0, t=30, b=0),
+         xaxis=dict(gridcolor="rgba(30,58,95,0.5)", linecolor="rgba(30,58,95,0.5)", tickfont=dict(color="#8aaccc")),
+         yaxis=dict(gridcolor="rgba(30,58,95,0.5)", linecolor="rgba(30,58,95,0.5)", tickfont=dict(color="#8aaccc")))
 
 @st.cache_data
 def load():
@@ -68,7 +112,7 @@ def _fake(t):
             "power_kw":[{"AC_slow":7,"AC_fast":22,"DC_rapid":50,"DC_ultra":150}[x] for x in tp],
             "postcode":[f"BS{i%99} {i%9}AA" for i in range(n)],
             "local_authority":np.random.choice(["Bristol","South Gloucestershire","Bath & NE Somerset"],n),
-            "site_type":np.random.choice(["retail","motorway_services","residential","workplace"],n)})
+            "site_type":np.random.choice(["Retail","Motorway Services","Residential","Workplace","Leisure"],n)})
     if t == "fact_sessions":
         n=60000; m=np.random.randint(1,13,n)
         hw=np.array([.3,.2,.1,.1,.2,.5,.8,1.5,1.8,1.2,1,1.1,1.2,1,.9,1,1.3,1.8,2,1.9,1.5,1.1,.7,.4])
@@ -88,7 +132,7 @@ def _fake(t):
         return pd.DataFrame({"charger_id":[f"CHR{i:05d}" for i in np.random.randint(0,500,n)],
             "date_key":np.random.randint(20250101,20251231,n),
             "uptime_pct":np.clip(np.random.normal(92,5,n),0,100).round(1),
-            "fault_type":np.random.choice([None,"network_timeout","payment_failure","connector_stuck"],n,p=[.92,.027,.027,.026])})
+            "fault_type":np.random.choice([None,"network_timeout","payment_failure","connector_stuck","overheating","power_surge"],n,p=[.92,.016,.016,.016,.016,.016])})
     if t == "gold_priority_scores":
         n=99; sc=np.round(np.random.uniform(20,90,n),1)
         return pd.DataFrame({"postcode":[f"BS{i} 1AA" for i in range(n)],
@@ -97,7 +141,7 @@ def _fake(t):
             "priority_score":sc,"priority_rank":pd.Series(sc).rank(ascending=False).astype(int).values,
             "ev_registrations_nearby":np.random.randint(50,2000,n),
             "population_density":np.random.randint(500,8000,n),
-            "road_type":np.random.choice(["motorway","A_road","B_road","urban"],n),
+            "road_type":np.random.choice(["Motorway","A Road","B Road","Urban"],n),
             "nearest_competitor_km":np.round(np.random.uniform(.1,15,n),1),
             "latitude":np.random.uniform(51.35,51.55,n),
             "longitude":np.random.uniform(-2.75,-2.40,n),
@@ -106,28 +150,52 @@ def _fake(t):
             "score_utilization":np.random.uniform(0,1,n)})
     return pd.DataFrame()
 
-def kpi(col, lbl, val, delta, colour, icon):
-    col.markdown(f'<div class="kpi-card kpi-{colour}"><div class="kpi-label">{icon} {lbl}</div><div class="kpi-value">{val}</div><div class="kpi-delta">{delta}</div></div>', unsafe_allow_html=True)
+def kpi(col, icon, lbl, val, sub, color):
+    col.markdown(f"""
+    <div class="kpi">
+        <div class="kpi-bar" style="background:{color}"></div>
+        <div class="kpi-icon">{icon}</div>
+        <div class="kpi-lbl">{lbl}</div>
+        <div class="kpi-val">{val}</div>
+        <div class="kpi-sub">{sub}</div>
+    </div>""", unsafe_allow_html=True)
 
-def insight(txt, title="💡 Insight"):
-    st.markdown(f'<div class="insight-card"><div class="insight-title">{title}</div><div class="insight-text">{txt}</div></div>', unsafe_allow_html=True)
+def ins(body, title="💡 Insight"):
+    st.markdown(f'<div class="insight"><div class="insight-t">{title}</div><div class="insight-b">{body}</div></div>', unsafe_allow_html=True)
 
 def sec(t):
-    st.markdown(f'<div class="sec-header">{t}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="sec">{t}</div>', unsafe_allow_html=True)
 
 def fl(fig, h=300):
-    fig.update_layout(**BASE, height=h)
+    fig.update_layout(**G, height=h)
     return fig
+
+def yax2(color):
+    return dict(overlaying="y", side="right", gridcolor="rgba(0,0,0,0)", linecolor="rgba(0,0,0,0)", tickfont=dict(color=color), color=color)
 
 def main():
     data = load()
 
     with st.sidebar:
-        st.markdown('<div style="text-align:center;padding:20px 0 10px"><div style="font-size:36px">⚡</div><div style="color:white;font-size:20px;font-weight:800">VoltSight BI</div><div style="color:#7a9cc4;font-size:11px">EV Infrastructure Analytics</div></div>', unsafe_allow_html=True)
-        st.divider()
-        page = st.radio("", ["📊 Network Overview","🗺️ Location Intelligence","🔧 Operations","📍 Expansion Planner"], label_visibility="collapsed")
-        st.divider()
-        st.markdown('<div style="color:#7a9cc4;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Filters</div>', unsafe_allow_html=True)
+        st.markdown("""
+        <div style="text-align:center;padding:28px 0 20px">
+            <div style="font-size:44px;filter:drop-shadow(0 0 20px rgba(0,196,140,0.6))">⚡</div>
+            <div style="color:#ffffff;font-size:20px;font-weight:900;letter-spacing:-0.5px;margin-top:8px">VoltSight BI</div>
+            <div style="color:#3a6a8a;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-top:4px">EV Infrastructure Analytics</div>
+        </div>
+        <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(0,196,140,0.3),transparent);margin:0 16px 20px"></div>
+        """, unsafe_allow_html=True)
+
+        page = st.radio("", [
+            "📊  Network Overview",
+            "🗺️  Location Intelligence",
+            "🔧  Operations",
+            "📍  Expansion Planner",
+        ], label_visibility="collapsed")
+
+        st.markdown('<div style="height:1px;background:linear-gradient(90deg,transparent,rgba(30,58,95,0.6),transparent);margin:16px 0"></div>', unsafe_allow_html=True)
+        st.markdown('<div style="color:#3a6a8a;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;padding:0 4px">Filters</div>', unsafe_allow_html=True)
+
         ch = data["dim_charger"]
         las = sorted(ch["local_authority"].dropna().unique())
         sel_la = st.multiselect("Local Authority", las, default=las)
@@ -136,10 +204,18 @@ def main():
         mnths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
         sel_m = st.multiselect("Month", mnths, default=mnths)
         m_nums = [i+1 for i,m in enumerate(mnths) if m in sel_m]
-        st.divider()
-        st.markdown('<div style="color:#3a5a7a;font-size:10px">Data: UK National Chargepoint Registry<br>Sessions: 12-month simulation (2025)<br><br>© VoltSight BI 2025</div>', unsafe_allow_html=True)
 
-    # Filter
+        st.markdown("""
+        <div style="margin-top:24px;padding:12px 16px;background:rgba(0,196,140,0.06);border-radius:10px;border:1px solid rgba(0,196,140,0.12)">
+            <div style="color:#3a6a8a;font-size:10px;line-height:1.8">
+                📋 Data: UK National Chargepoint Registry<br>
+                🔢 Sessions: 12-month simulation (2025)<br>
+                🏛️ © VoltSight BI 2025
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # ── Filter ──────────────────────────────────────────────────────────────
     chargers = ch.copy()
     if sel_la: chargers = chargers[chargers["local_authority"].isin(sel_la)]
     if sel_tp: chargers = chargers[chargers["charger_type"].isin(sel_tp)]
@@ -153,213 +229,294 @@ def main():
     faults = sess[sess["status"]=="fault"]
     mn = {1:"Jan",2:"Feb",3:"Mar",4:"Apr",5:"May",6:"Jun",7:"Jul",8:"Aug",9:"Sep",10:"Oct",11:"Nov",12:"Dec"}
 
-    # ── PAGE 1 ─────────────────────────────────────────────────────────────
-    if page == "📊 Network Overview":
-        st.markdown('<div class="page-title">📊 Network Overview</div>', unsafe_allow_html=True)
-        st.markdown('<div class="page-sub">UK EV Charging Network — Full Year 2025 Performance</div>', unsafe_allow_html=True)
-        c1,c2,c3,c4 = st.columns(4)
-        kpi(c1,"Total Chargers",f"{len(chargers):,}","Active on network","green","🔌")
-        kpi(c2,"Total Sessions",f"{len(comp):,}","Completed 2025","blue","⚡")
-        kpi(c3,"Total Revenue",f"£{comp['revenue_gbp'].sum():,.0f}","Full year","orange","💷")
-        kpi(c4,"Avg Session",f"{comp['duration_min'].mean():.0f} min",f"{comp['energy_kwh'].sum():,.0f} kWh total","pink","⏱")
-        st.markdown("<br>", unsafe_allow_html=True)
+    # ══════════════════════════════════════════════════════════════════════
+    # PAGE 1: NETWORK OVERVIEW
+    # ══════════════════════════════════════════════════════════════════════
+    if "Network Overview" in page:
+        st.markdown('<div class="pg-title">Network Overview</div>', unsafe_allow_html=True)
+        st.markdown('<div class="pg-sub">UK EV Charging Network · Full Year 2025 · Live Performance Metrics</div>', unsafe_allow_html=True)
 
-        c1,c2 = st.columns([3,2])
+        c1,c2,c3,c4 = st.columns(4)
+        kpi(c1,"🔌","Total Chargers",f"{len(chargers):,}","Active on UK network","linear-gradient(90deg,#00c48c,#00e6a8)")
+        kpi(c2,"⚡","Sessions Completed",f"{len(comp):,}","Full year 2025","linear-gradient(90deg,#2196f3,#64b5f6)")
+        kpi(c3,"💷","Total Revenue",f"£{comp['revenue_gbp'].sum():,.0f}","Generated in 2025","linear-gradient(90deg,#ff9800,#ffb74d)")
+        kpi(c4,"⚡","Energy Delivered",f"{comp['energy_kwh'].sum()/1000:,.0f} MWh",f"Avg {comp['duration_min'].mean():.0f} min/session","linear-gradient(90deg,#e91e63,#f48fb1)")
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        c1, c2 = st.columns([3,2])
+
         with c1:
-            sec("📈 Monthly Sessions & Revenue")
+            sec("📈 Monthly Performance")
             mo = comp.groupby("month").agg(sessions=("session_id","count"),revenue=("revenue_gbp","sum")).reset_index()
             mo["mn"] = mo["month"].map(mn)
             fig = go.Figure()
-            fig.add_trace(go.Scatter(x=mo["mn"],y=mo["sessions"],fill="tozeroy",
-                fillcolor="rgba(0,196,140,0.15)",line=dict(color="#00c48c",width=3),
-                mode="lines+markers",marker=dict(size=8,color="#00c48c"),name="Sessions"))
-            fig.add_trace(go.Bar(x=mo["mn"],y=mo["revenue"],marker_color="rgba(33,150,243,0.25)",
-                yaxis="y2",name="Revenue £"))
-            fig.update_layout(**BASE,height=280,
-                yaxis2=dict(overlaying="y",side="right",gridcolor="rgba(0,0,0,0)",color="#7a9cc4"),
-                legend=dict(orientation="h",y=1.1,bgcolor="rgba(0,0,0,0)"))
+            fig.add_trace(go.Scatter(x=mo["mn"],y=mo["sessions"],
+                fill="tozeroy", fillcolor="rgba(0,196,140,0.1)",
+                line=dict(color="#00c48c",width=2.5,shape="spline"),
+                mode="lines+markers",marker=dict(size=7,color="#00c48c",line=dict(width=2,color="#0a1628")),
+                name="Sessions",hovertemplate="<b>%{x}</b><br>Sessions: %{y:,}<extra></extra>"))
+            fig.add_trace(go.Bar(x=mo["mn"],y=mo["revenue"],
+                marker=dict(color="rgba(33,150,243,0.2)",line=dict(color="rgba(33,150,243,0.4)",width=1)),
+                yaxis="y2",name="Revenue £",
+                hovertemplate="<b>%{x}</b><br>Revenue: £%{y:,.0f}<extra></extra>"))
+            fig.update_layout(**G,height=280,
+                yaxis2=yax2("#2196f3"),
+                legend=dict(orientation="h",y=1.1,bgcolor="rgba(0,0,0,0)",font=dict(color="#8aaccc",size=11)),
+                hovermode="x unified")
             st.plotly_chart(fig, use_container_width=True)
 
         with c2:
-            sec("🔌 Charger Type Split")
+            sec("🔌 Network Composition")
             tc = chargers["charger_type"].value_counts().reset_index()
             tc.columns = ["type","count"]
-            fig2 = go.Figure(go.Pie(labels=tc["type"],values=tc["count"],hole=0.6,
-                marker=dict(colors=[CT_COLORS.get(t,"#888") for t in tc["type"]],
-                            line=dict(color="#0a0f1e",width=3)),
-                textfont=dict(color="white",size=11)))
-            fig2.update_layout(**BASE,height=280,
-                legend=dict(orientation="h",y=-0.2,font=dict(color="#c8d8ea",size=10)),
-                annotations=[dict(text=f"<b>{len(chargers)}</b>",x=0.5,y=0.5,
-                    font=dict(size=20,color="white"),showarrow=False)])
+            fig2 = go.Figure(go.Pie(
+                labels=tc["type"],values=tc["count"],hole=0.65,
+                marker=dict(colors=[CT_C.get(t,"#888") for t in tc["type"]],
+                            line=dict(color="#060d1a",width=3)),
+                textinfo="percent",textfont=dict(color="white",size=11),
+                hovertemplate="<b>%{label}</b><br>%{value:,} chargers (%{percent})<extra></extra>"))
+            fig2.update_layout(**G,height=280,
+                legend=dict(orientation="h",y=-0.2,font=dict(color="#8aaccc",size=10)),
+                annotations=[dict(text=f"<b style='font-size:22px'>{len(chargers)}</b><br><span style='font-size:10px'>chargers</span>",
+                    x=0.5,y=0.5,font=dict(size=16,color="white"),showarrow=False)])
             st.plotly_chart(fig2, use_container_width=True)
 
-        c3,c4 = st.columns(2)
+        c3, c4 = st.columns(2)
         with c3:
-            sec("⏰ Peak Hours")
+            sec("⏰ Demand by Hour of Day")
             hr = comp.groupby("start_hour").size().reset_index(name="n")
-            fig3 = go.Figure(go.Bar(x=hr["start_hour"],y=hr["n"],
-                marker_color=["#00c48c" if h in [7,8,17,18,19] else "#1a2f4a" for h in hr["start_hour"]],
-                hovertemplate="Hour %{x}:00<br>Sessions: %{y:,}<extra></extra>"))
-            fig3.update_layout(**BASE,height=240,bargap=0.1)
+            peak = [7,8,17,18,19]
+            fig3 = go.Figure(go.Bar(
+                x=hr["start_hour"],y=hr["n"],
+                marker=dict(
+                    color=["#00c48c" if h in peak else "rgba(33,58,95,0.7)" for h in hr["start_hour"]],
+                    line=dict(color="rgba(0,0,0,0)",width=0)),
+                hovertemplate="<b>%{x}:00</b><br>Sessions: %{y:,}<extra></extra>"))
+            fig3.update_layout(**G,height=240,bargap=0.15,
+                xaxis=dict(tickmode="linear",tick0=0,dtick=3,gridcolor="rgba(30,58,95,0.4)"))
             st.plotly_chart(fig3, use_container_width=True)
 
         with c4:
-            sec("🏪 Sessions by Site Type")
+            sec("🏪 Revenue by Site Type")
             if "site_type" in chargers.columns:
                 mg = sess.merge(chargers[["charger_id","site_type"]],on="charger_id",how="left")
-                st_s = mg[mg["status"]=="completed"].groupby("site_type").size().reset_index(name="n").sort_values("n")
-                fig4 = go.Figure(go.Bar(x=st_s["n"],y=st_s["site_type"],orientation="h",
-                    marker=dict(color=st_s["n"],colorscale=[[0,"#0d1f35"],[1,"#00c48c"]]),
-                    hovertemplate="<b>%{y}</b><br>%{x:,}<extra></extra>"))
-                fig4.update_layout(**BASE,height=240)
+                st_s = mg[mg["status"]=="completed"].groupby("site_type").agg(rev=("revenue_gbp","sum")).reset_index().sort_values("rev")
+                fig4 = go.Figure(go.Bar(
+                    x=st_s["rev"],y=st_s["site_type"],orientation="h",
+                    marker=dict(color=st_s["rev"],
+                        colorscale=[[0,"rgba(33,58,95,0.5)"],[1,"#00c48c"]],
+                        line=dict(color="rgba(0,0,0,0)")),
+                    text=[f"£{v:,.0f}" for v in st_s["rev"]],
+                    textposition="outside",textfont=dict(color="#8aaccc",size=11),
+                    hovertemplate="<b>%{y}</b><br>£%{x:,.0f}<extra></extra>"))
+                fig4.update_layout(**G,height=240,xaxis=dict(showgrid=False,showticklabels=False))
                 st.plotly_chart(fig4, use_container_width=True)
 
         ph = comp.groupby("start_hour").size().idxmax()
-        insight(f"Peak demand at <b>{ph}:00</b>. Network delivered <b>£{comp['revenue_gbp'].sum():,.0f}</b> revenue across <b>{len(comp):,}</b> sessions in 2025. Consider deploying DC Rapid units at peak-hour hotspots.", "💡 Network Insight")
+        top_type = chargers["charger_type"].value_counts().index[0]
+        ins(f"Peak charging demand occurs at <b>{ph}:00</b> — align rapid charger deployment to morning and evening commuter windows. "
+            f"<b>{top_type.replace('_',' ').title()}</b> units dominate at <b>{chargers['charger_type'].value_counts().iloc[0]}</b> sites. "
+            f"Network generated <b>£{comp['revenue_gbp'].sum():,.0f}</b> in 2025 — a strong commercial signal for expansion.", "💡 Network Intelligence")
 
-    # ── PAGE 2 ─────────────────────────────────────────────────────────────
-    elif page == "🗺️ Location Intelligence":
-        st.markdown('<div class="page-title">🗺️ Location Intelligence</div>', unsafe_allow_html=True)
-        st.markdown('<div class="page-sub">Geographic distribution, coverage gaps, and demand signals</div>', unsafe_allow_html=True)
+    # ══════════════════════════════════════════════════════════════════════
+    # PAGE 2: LOCATION INTELLIGENCE
+    # ══════════════════════════════════════════════════════════════════════
+    elif "Location Intelligence" in page:
+        st.markdown('<div class="pg-title">Location Intelligence</div>', unsafe_allow_html=True)
+        st.markdown('<div class="pg-sub">Geographic distribution · Coverage gaps · Demand signals across UK</div>', unsafe_allow_html=True)
+
         pr = data["gold_priority_scores"]
-        c1,c2,c3 = st.columns(3)
         las2 = chargers["local_authority"].value_counts()
-        kpi(c1,"Local Authorities",str(chargers["local_authority"].nunique()),"Areas covered","green","🏛️")
-        kpi(c2,"Top Area",str(las2.index[0]) if len(las2) else "N/A",f"{las2.iloc[0]:,} chargers" if len(las2) else "","blue","📍")
-        kpi(c3,"Avg EV Registrations",f"{int(pr['ev_registrations_nearby'].mean()):,}","Per coverage zone","orange","🚗")
-        st.markdown("<br>",unsafe_allow_html=True)
+        c1,c2,c3 = st.columns(3)
+        kpi(c1,"🏛️","Areas Covered",str(chargers["local_authority"].nunique()),"Local authorities","linear-gradient(90deg,#00c48c,#00e6a8)")
+        kpi(c2,"📍","Busiest Area",str(las2.index[0]) if len(las2) else "N/A",f"{las2.iloc[0]:,} chargers" if len(las2) else "","linear-gradient(90deg,#2196f3,#64b5f6)")
+        kpi(c3,"🚗","Avg EV Density",f"{int(pr['ev_registrations_nearby'].mean()):,}","EV registrations per zone","linear-gradient(90deg,#ff9800,#ffb74d)")
 
+        st.markdown("<br>",unsafe_allow_html=True)
         c1,c2 = st.columns([3,2])
+
         with c1:
-            sec("🗺️ Priority Score Map")
+            sec("🗺️ Site Priority Heatmap")
             if "latitude" in pr.columns:
                 fig = px.scatter_mapbox(pr.sort_values("priority_score"),
                     lat="latitude",lon="longitude",color="priority_score",
                     size="ev_registrations_nearby",hover_name="postcode",
-                    color_continuous_scale=[[0,"#0d1f35"],[0.5,"#2196f3"],[1,"#00c48c"]],
-                    size_max=18,mapbox_style="carto-darkmatter",zoom=9.5,
-                    center={"lat":51.45,"lon":-2.58})
-                fig.update_layout(**BASE,height=400)
+                    hover_data={"priority_score":":.1f","ward_name":True,"road_type":True,"latitude":False,"longitude":False},
+                    color_continuous_scale=[[0,"#0d1f38"],[0.4,"#1565c0"],[0.7,"#0097a7"],[1,"#00c48c"]],
+                    size_max=20,mapbox_style="carto-darkmatter",zoom=9.5,
+                    center={"lat":51.45,"lon":-2.58},
+                    labels={"priority_score":"Priority Score"})
+                fig.update_layout(**G,height=420,
+                    coloraxis_colorbar=dict(title=dict(text="Score",font=dict(color="#8aaccc")),
+                        tickfont=dict(color="#8aaccc"),bgcolor="rgba(0,0,0,0)"))
                 st.plotly_chart(fig, use_container_width=True)
 
         with c2:
-            sec("📊 Demand vs Supply")
+            sec("📊 EV Demand vs Priority")
             fig2 = px.scatter(pr,x="ev_registrations_nearby",y="priority_score",
                 color="road_type",size="population_density",hover_name="postcode",
                 color_discrete_sequence=PALETTE,
-                labels={"ev_registrations_nearby":"EV Registrations","priority_score":"Priority Score"})
-            fig2.update_layout(**BASE,height=400,legend=dict(orientation="h",y=-0.15,font=dict(color="#c8d8ea",size=10)))
+                labels={"ev_registrations_nearby":"EV Registrations Nearby","priority_score":"Priority Score","road_type":"Road Type"})
+            fig2.update_layout(**G,height=420,
+                legend=dict(orientation="h",y=-0.18,font=dict(color="#8aaccc",size=10),bgcolor="rgba(0,0,0,0)"))
             st.plotly_chart(fig2, use_container_width=True)
 
-        sec("🏛️ Revenue by Local Authority")
+        sec("🏛️ Performance by Local Authority")
         la_s = comp.merge(chargers[["charger_id","local_authority"]],on="charger_id",how="left")
         la_g = la_s.groupby("local_authority").agg(sessions=("session_id","count"),revenue=("revenue_gbp","sum")).reset_index().sort_values("revenue",ascending=False)
         fig3 = go.Figure()
-        fig3.add_trace(go.Bar(name="Sessions",x=la_g["local_authority"],y=la_g["sessions"],marker_color="#00c48c"))
+        fig3.add_trace(go.Bar(name="Sessions",x=la_g["local_authority"],y=la_g["sessions"],
+            marker=dict(color="rgba(0,196,140,0.7)",line=dict(color="rgba(0,0,0,0)"))))
         fig3.add_trace(go.Scatter(name="Revenue £",x=la_g["local_authority"],y=la_g["revenue"],
-            mode="lines+markers",line=dict(color="#ff9800",width=3),yaxis="y2"))
-        fig3.update_layout(**BASE,height=260,yaxis2=dict(overlaying="y",side="right",gridcolor="rgba(0,0,0,0)",color="#ff9800"),
-            legend=dict(orientation="h",y=1.1,bgcolor="rgba(0,0,0,0)"))
+            mode="lines+markers",line=dict(color="#ff9800",width=2.5,shape="spline"),
+            marker=dict(size=9,color="#ff9800",line=dict(width=2,color="#060d1a")),yaxis="y2"))
+        fig3.update_layout(**G,height=260,yaxis2=yax2("#ff9800"),
+            legend=dict(orientation="h",y=1.1,bgcolor="rgba(0,0,0,0)",font=dict(color="#8aaccc")))
         st.plotly_chart(fig3, use_container_width=True)
-        if len(la_g): insight(f"<b>{la_g.iloc[0]['local_authority']}</b> leads with <b>£{la_g.iloc[0]['revenue']:,.0f}</b> revenue from <b>{la_g.iloc[0]['sessions']:,}</b> sessions. Prioritise investment here for maximum ROI.", "📍 Location Insight")
+        if len(la_g):
+            ins(f"<b>{la_g.iloc[0]['local_authority']}</b> leads performance with <b>£{la_g.iloc[0]['revenue']:,.0f}</b> revenue from <b>{la_g.iloc[0]['sessions']:,}</b> sessions. "
+                f"Concentrating infrastructure investment in high-performing zones yields the strongest commercial returns.", "📍 Location Insight")
 
-    # ── PAGE 3 ─────────────────────────────────────────────────────────────
-    elif page == "🔧 Operations":
-        st.markdown('<div class="page-title">🔧 Operations & Reliability</div>', unsafe_allow_html=True)
-        st.markdown('<div class="page-sub">Network health, uptime monitoring, and fault diagnostics</div>', unsafe_allow_html=True)
+    # ══════════════════════════════════════════════════════════════════════
+    # PAGE 3: OPERATIONS
+    # ══════════════════════════════════════════════════════════════════════
+    elif "Operations" in page:
+        st.markdown('<div class="pg-title">Operations & Reliability</div>', unsafe_allow_html=True)
+        st.markdown('<div class="pg-sub">Network health monitoring · Fault diagnostics · SLA performance tracking</div>', unsafe_allow_html=True)
+
         avg_up = avail["uptime_pct"].mean()
         b95 = (avail.groupby("charger_id")["uptime_pct"].mean() < 95).sum()
         fm = faults["fault_type"].dropna().mode()
-        c1,c2,c3,c4 = st.columns(4)
-        kpi(c1,"Avg Network Uptime",f"{avg_up:.1f}%","Target: 95%","green" if avg_up>=95 else "orange","📡")
-        kpi(c2,"Chargers Below 95%",str(int(b95)),"Need attention","pink","⚠️")
-        kpi(c3,"Fault Incidents",f"{len(faults):,}","Total 2025","orange","🔴")
-        kpi(c4,"Top Fault",fm[0] if len(fm) else "N/A","Primary cause","blue","🛠️")
-        st.markdown("<br>",unsafe_allow_html=True)
+        sla_color = "linear-gradient(90deg,#00c48c,#00e6a8)" if avg_up>=95 else "linear-gradient(90deg,#ff9800,#ffb74d)"
 
+        c1,c2,c3,c4 = st.columns(4)
+        kpi(c1,"📡","Network Uptime",f"{avg_up:.1f}%","Target: 95% SLA",sla_color)
+        kpi(c2,"⚠️","Below SLA",str(int(b95)),"Chargers need attention","linear-gradient(90deg,#e91e63,#f48fb1)")
+        kpi(c3,"🔴","Fault Incidents",f"{len(faults):,}","Total recorded 2025","linear-gradient(90deg,#ff5722,#ff8a65)")
+        kpi(c4,"🛠️","Primary Fault",fm[0].replace("_"," ").title() if len(fm) else "N/A","Most common failure","linear-gradient(90deg,#9c27b0,#ce93d8)")
+
+        st.markdown("<br>",unsafe_allow_html=True)
         c1,c2 = st.columns(2)
+
         with c1:
-            sec("🔴 Fault Breakdown")
+            sec("🔴 Fault Type Analysis")
             fc = faults["fault_type"].dropna().value_counts().reset_index()
             fc.columns = ["type","count"]
-            fig = go.Figure(go.Bar(x=fc["count"],y=fc["type"],orientation="h",
-                marker=dict(color=fc["count"],colorscale=[[0,"#1a2f4a"],[1,"#ff6b6b"]]),
-                text=fc["count"],textposition="outside",textfont=dict(color="#c8d8ea")))
-            fig.update_layout(**BASE,height=280)
+            fc["label"] = fc["type"].str.replace("_"," ").str.title()
+            fig = go.Figure(go.Bar(
+                x=fc["count"],y=fc["label"],orientation="h",
+                marker=dict(color=fc["count"],
+                    colorscale=[[0,"rgba(33,58,95,0.5)"],[0.5,"rgba(255,152,0,0.7)"],[1,"rgba(229,57,53,0.8)"]],
+                    line=dict(color="rgba(0,0,0,0)")),
+                text=[f"  {v:,}" for v in fc["count"]],
+                textposition="outside",textfont=dict(color="#8aaccc",size=11),
+                hovertemplate="<b>%{y}</b><br>Incidents: %{x:,}<extra></extra>"))
+            fig.update_layout(**G,height=280,xaxis=dict(showgrid=False,showticklabels=False))
             st.plotly_chart(fig, use_container_width=True)
 
         with c2:
             sec("📊 Uptime Distribution")
-            fig2 = go.Figure(go.Histogram(x=avail["uptime_pct"],nbinsx=25,
-                marker=dict(color="#2196f3",opacity=0.8,line=dict(color="#0a0f1e",width=1))))
-            fig2.add_vline(x=95,line_dash="dash",line_color="#00c48c",line_width=2,annotation_text="95% SLA",annotation_font_color="#00c48c")
-            fig2.add_vline(x=avg_up,line_dash="dot",line_color="#ff9800",line_width=2,annotation_text=f"Avg {avg_up:.1f}%",annotation_font_color="#ff9800")
-            fig2.update_layout(**BASE,height=280)
+            fig2 = go.Figure()
+            fig2.add_trace(go.Histogram(x=avail["uptime_pct"],nbinsx=25,
+                marker=dict(color="rgba(33,150,243,0.6)",line=dict(color="rgba(33,150,243,0.3)",width=1)),
+                hovertemplate="Uptime: %{x:.0f}%<br>Count: %{y:,}<extra></extra>"))
+            fig2.add_vline(x=95,line_dash="dash",line_color="#00c48c",line_width=1.5,
+                annotation=dict(text="95% SLA",font=dict(color="#00c48c",size=11),bgcolor="rgba(0,0,0,0)"))
+            fig2.add_vline(x=avg_up,line_dash="dot",line_color="#ff9800",line_width=1.5,
+                annotation=dict(text=f"Avg {avg_up:.1f}%",font=dict(color="#ff9800",size=11),bgcolor="rgba(0,0,0,0)"))
+            fig2.update_layout(**G,height=280)
             st.plotly_chart(fig2, use_container_width=True)
 
         sec("📅 Monthly Fault Trend")
         mf = faults.groupby("month").size().reset_index(name="faults")
-        mc = comp.groupby("month").size().reset_index(name="completed")
-        mt = mf.merge(mc,on="month",how="outer").fillna(0)
+        mc_d = comp.groupby("month").size().reset_index(name="completed")
+        mt = mf.merge(mc_d,on="month",how="outer").fillna(0)
         mt["fault_rate"] = (mt["faults"]/(mt["faults"]+mt["completed"])*100).round(1)
         mt["mn"] = mt["month"].map(mn)
         fig3 = go.Figure()
-        fig3.add_trace(go.Bar(x=mt["mn"],y=mt["faults"],name="Faults",marker_color="rgba(255,107,107,0.7)"))
+        fig3.add_trace(go.Bar(x=mt["mn"],y=mt["faults"],name="Faults",
+            marker=dict(color="rgba(229,57,53,0.5)",line=dict(color="rgba(229,57,53,0.3)",width=1))))
         fig3.add_trace(go.Scatter(x=mt["mn"],y=mt["fault_rate"],name="Fault Rate %",
-            line=dict(color="#ff9800",width=2,dash="dot"),yaxis="y2",mode="lines+markers"))
-        fig3.update_layout(**BASE,height=250,yaxis2=dict(overlaying="y",side="right",gridcolor="rgba(0,0,0,0)",color="#ff9800"),
-            legend=dict(orientation="h",y=1.1,bgcolor="rgba(0,0,0,0)"))
+            line=dict(color="#ff9800",width=2,shape="spline"),
+            marker=dict(size=7,color="#ff9800"),yaxis="y2",
+            hovertemplate="<b>%{x}</b><br>%{y:.1f}%<extra></extra>"))
+        fig3.update_layout(**G,height=250,yaxis2=yax2("#ff9800"),
+            legend=dict(orientation="h",y=1.1,bgcolor="rgba(0,0,0,0)",font=dict(color="#8aaccc")))
         st.plotly_chart(fig3, use_container_width=True)
-        insight(f"Uptime <b>{avg_up:.1f}%</b> vs 95% target. <b>{int(b95)} chargers</b> underperforming. Top fault: <b>{fm[0] if len(fm) else 'N/A'}</b> — schedule preventative maintenance.", "🔧 Operations Insight")
+        ins(f"Network uptime <b>{avg_up:.1f}%</b> vs 95% SLA target. <b>{int(b95)} chargers</b> below threshold — prioritise for maintenance. "
+            f"Leading fault: <b>{fm[0].replace('_',' ').title() if len(fm) else 'N/A'}</b>. Predictive maintenance schedule recommended.", "🔧 Operations Insight")
 
-    # ── PAGE 4 ─────────────────────────────────────────────────────────────
-    elif page == "📍 Expansion Planner":
-        st.markdown('<div class="page-title">📍 Expansion Planner</div>', unsafe_allow_html=True)
-        st.markdown('<div class="page-sub">AI-powered site ranking — Where to install the next EV charger</div>', unsafe_allow_html=True)
+    # ══════════════════════════════════════════════════════════════════════
+    # PAGE 4: EXPANSION PLANNER
+    # ══════════════════════════════════════════════════════════════════════
+    elif "Expansion Planner" in page:
+        st.markdown('<div class="pg-title">Expansion Planner</div>', unsafe_allow_html=True)
+        st.markdown('<div class="pg-sub">AI-powered site ranking · Prioritise where to install the next EV charger</div>', unsafe_allow_html=True)
+
         pr = data["gold_priority_scores"].copy()
-        sec("⚙️ Adjust Priority Weights")
+        sec("⚙️ Priority Weight Configuration")
+        st.markdown('<div style="color:#3a6a8a;font-size:12px;margin:-8px 0 16px">Adjust weights to reflect your organisation\'s strategic priorities. Rankings update in real time.</div>', unsafe_allow_html=True)
+
         c1,c2,c3,c4,c5 = st.columns(5)
-        w1=c1.slider("🚗 Demand",0,100,30,5)
-        w2=c2.slider("📉 Supply Gap",0,100,25,5)
-        w3=c3.slider("🛣️ Road Access",0,100,20,5)
-        w4=c4.slider("📡 Coverage",0,100,15,5)
-        w5=c5.slider("⚡ Utilization",0,100,10,5)
-        tot = max(w1+w2+w3+w4+w5, 1)
+        w1=c1.slider("🚗 EV Demand",0,100,30,5,help="Weight given to EV registration density")
+        w2=c2.slider("📉 Supply Gap",0,100,25,5,help="Under-served areas with few chargers")
+        w3=c3.slider("🛣️ Road Access",0,100,20,5,help="Proximity to A-roads and motorways")
+        w4=c4.slider("📡 Coverage",0,100,15,5,help="Distance from nearest competitor")
+        w5=c5.slider("⚡ Utilisation",0,100,10,5,help="How busy existing nearby chargers are")
+
+        tot = max(w1+w2+w3+w4+w5,1)
+        st.markdown(f'<div style="color:#3a6a8a;font-size:11px;text-align:right;margin-top:-8px">Weight total: <b style="color:{"#00c48c" if abs(tot-100)<5 else "#ff9800"}">{tot}%</b></div>', unsafe_allow_html=True)
+
         if all(c in pr.columns for c in ["score_demand","score_supply_gap"]):
             pr["score"] = ((pr["score_demand"]*w1+pr["score_supply_gap"]*w2+pr["score_road_access"]*w3+pr["score_coverage"]*w4+pr["score_utilization"]*w5)/tot*100).round(1)
         else:
             pr["score"] = pr["priority_score"]
         pr = pr.sort_values("score",ascending=False).reset_index(drop=True)
-        st.markdown("<br>",unsafe_allow_html=True)
 
+        st.markdown("<br>",unsafe_allow_html=True)
         c1,c2 = st.columns([3,2])
+
         with c1:
-            sec("🏆 Top 10 Sites for New Charger")
+            sec("🏆 Top Expansion Sites")
             t10 = pr.head(10).copy()
             t10.index = range(1,11)
-            t10["Score"] = t10["score"].apply(lambda x: f"{x:.1f}/100")
-            t10["EV Demand"] = t10["ev_registrations_nearby"].apply(lambda x: f"{x:,}")
-            t10["Competition"] = t10["nearest_competitor_km"].apply(lambda x: f"{x:.1f} km")
-            st.dataframe(t10[["postcode","ward_name","local_authority","Score","road_type","EV Demand","Competition"]].rename(columns={"postcode":"Postcode","ward_name":"Ward","local_authority":"Local Authority","road_type":"Road"}), use_container_width=True, height=360)
+            display = pd.DataFrame({
+                "Rank": [f"#{i}" for i in range(1,11)],
+                "Postcode": t10["postcode"].values,
+                "Ward": t10["ward_name"].values,
+                "Authority": t10["local_authority"].values,
+                "Score": [f"{s:.1f}/100" for s in t10["score"].values],
+                "EV Density": [f"{v:,}" for v in t10["ev_registrations_nearby"].values],
+                "Road": t10["road_type"].values,
+                "Gap (km)": [f"{v:.1f}" for v in t10["nearest_competitor_km"].values],
+            })
+            display.index = range(1,11)
+            st.dataframe(display, use_container_width=True, height=370)
 
         with c2:
-            sec(f"📊 Score: #{1} Site")
+            sec(f"📊 Component Breakdown")
             t1 = pr.iloc[0]
             if "score_demand" in t1.index:
-                bd = pd.DataFrame({"Component":["🚗 Demand","📉 Supply Gap","🛣️ Road","📡 Coverage","⚡ Utilization"],
-                    "Score":[round(t1.get("score_demand",0)*100,1),round(t1.get("score_supply_gap",0)*100,1),
-                              round(t1.get("score_road_access",0)*100,1),round(t1.get("score_coverage",0)*100,1),
-                              round(t1.get("score_utilization",0)*100,1)]})
-                fig = go.Figure(go.Bar(x=bd["Score"],y=bd["Component"],orientation="h",
-                    marker=dict(color=bd["Score"],colorscale=[[0,"#1a2f4a"],[1,"#00c48c"]]),
-                    text=[f"{s:.0f}" for s in bd["Score"]],textposition="outside",textfont=dict(color="#c8d8ea")))
-                fig.update_layout(**BASE,height=360,title=dict(text=f"<b>{t1['postcode']}</b> — {t1['score']:.1f}/100",font=dict(color="white",size=13)))
+                comps = ["EV Demand","Supply Gap","Road Access","Coverage","Utilisation"]
+                vals = [round(t1.get(f"score_{k}",0)*100,1) for k in ["demand","supply_gap","road_access","coverage","utilization"]]
+                fig = go.Figure(go.Bar(
+                    x=vals, y=comps, orientation="h",
+                    marker=dict(color=vals,
+                        colorscale=[[0,"rgba(33,58,95,0.6)"],[0.5,"rgba(33,150,243,0.7)"],[1,"rgba(0,196,140,0.8)"]],
+                        line=dict(color="rgba(0,0,0,0)")),
+                    text=[f"{v:.0f}" for v in vals],
+                    textposition="outside",textfont=dict(color="#8aaccc",size=12),
+                    hovertemplate="<b>%{y}</b><br>Score: %{x:.1f}<extra></extra>"))
+                fig.update_layout(**G,height=370,
+                    title=dict(text=f"<b>{t1['postcode']}</b>  ·  {t1['score']:.1f}/100",
+                        font=dict(color="white",size=13)),
+                    xaxis=dict(showgrid=False,showticklabels=False,range=[0,max(vals)*1.3]))
                 st.plotly_chart(fig, use_container_width=True)
 
-        insight(f"Top site: <b>{pr.iloc[0]['postcode']}</b> ({pr.iloc[0]['ward_name']}) — Score <b>{pr.iloc[0]['score']:.1f}/100</b>. "
-                f"<b>{pr.iloc[0]['ev_registrations_nearby']:,} EVs</b> nearby, nearest competitor <b>{pr.iloc[0]['nearest_competitor_km']:.1f} km</b>. "
-                f"Recommended: <b>DC Rapid 50kW</b> unit.", "🤖 AI Recommendation")
+        ins(f"Top recommendation: <b>{pr.iloc[0]['postcode']}</b> ({pr.iloc[0]['ward_name']}) — priority score <b>{pr.iloc[0]['score']:.1f}/100</b>. "
+            f"<b>{pr.iloc[0]['ev_registrations_nearby']:,} EVs</b> registered in the catchment area, "
+            f"nearest competitor <b>{pr.iloc[0]['nearest_competitor_km']:.1f} km</b> away. "
+            f"Recommended deployment: <b>DC Rapid 50kW</b> with dual CCS connectors.", "🤖 AI Site Recommendation")
 
 if __name__ == "__main__":
     main()
