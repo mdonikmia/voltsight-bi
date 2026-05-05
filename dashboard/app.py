@@ -511,18 +511,37 @@ def main():
         with r1c1:
             sec("🏆 Top 10 Priority Sites for New Charger")
             t10 = pr.head(10).copy()
-            disp = pd.DataFrame({
-                "Rank":     [f"#{i}" for i in range(1,11)],
-                "Postcode": t10["postcode"].values,
-                "Ward":     t10["ward_name"].values,
-                "Authority":t10["local_authority"].values,
-                "Score":    [f"{s:.1f}" for s in t10["score"].values],
-                "EV Count": [f"{v:,}" for v in t10["ev_registrations_nearby"].values],
-                "Road":     t10["road_type"].values,
-                "Gap (km)": [f"{v:.1f}" for v in t10["nearest_competitor_km"].values],
-            })
-            disp.index = range(1,11)
-            st.dataframe(disp, use_container_width=True, height=350)
+            # Build HTML table for reliable dark mode rendering
+            rows = ""
+            for i, (_, row) in enumerate(t10.iterrows(), 1):
+                score_val = row["score"]
+                score_color = "#00c48c" if score_val >= 70 else "#2196f3" if score_val >= 50 else "#ff9800"
+                bg = "rgba(255,255,255,0.03)" if i % 2 == 0 else "transparent"
+                rows += f"""<tr style="background:{bg};transition:background 0.2s" onmouseover="this.style.background='rgba(0,196,140,0.07)'" onmouseout="this.style.background='{bg}'">
+                    <td style="padding:10px 14px;color:#4a7a9b;font-weight:700;font-size:12px">#{i}</td>
+                    <td style="padding:10px 14px;color:#ffffff;font-weight:700;font-size:13px">{row["postcode"]}</td>
+                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px">{row["ward_name"]}</td>
+                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px">{row["local_authority"]}</td>
+                    <td style="padding:10px 14px"><span style="background:rgba(0,196,140,0.15);color:{score_color};font-weight:800;font-size:13px;padding:4px 10px;border-radius:8px;border:1px solid {score_color}40">{score_val:.1f}</span></td>
+                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px">{int(row["ev_registrations_nearby"]):,}</td>
+                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px">{row["road_type"]}</td>
+                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px">{row["nearest_competitor_km"]:.1f} km</td>
+                </tr>"""
+            html_table = f"""<div style="background:#0c1e35;border:1px solid rgba(30,58,95,0.6);border-radius:16px;overflow:hidden;margin-top:4px">
+                <table style="width:100%;border-collapse:collapse;font-family:Inter,sans-serif">
+                    <thead><tr style="background:rgba(0,196,140,0.08);border-bottom:1px solid rgba(30,58,95,0.8)">
+                        <th style="padding:12px 14px;color:#4a7a9b;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left">#</th>
+                        <th style="padding:12px 14px;color:#4a7a9b;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left">Postcode</th>
+                        <th style="padding:12px 14px;color:#4a7a9b;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left">Ward</th>
+                        <th style="padding:12px 14px;color:#4a7a9b;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left">Authority</th>
+                        <th style="padding:12px 14px;color:#4a7a9b;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left">Score</th>
+                        <th style="padding:12px 14px;color:#4a7a9b;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left">EV Count</th>
+                        <th style="padding:12px 14px;color:#4a7a9b;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left">Road</th>
+                        <th style="padding:12px 14px;color:#4a7a9b;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-align:left">Gap</th>
+                    </tr></thead>
+                    <tbody>{rows}</tbody>
+                </table></div>"""
+            st.markdown(html_table, unsafe_allow_html=True)
 
         with r1c2:
             sec("📊 Score Breakdown — #1 Site")
