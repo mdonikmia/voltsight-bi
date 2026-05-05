@@ -490,7 +490,7 @@ def page_expansion_planner(data: dict):
             "Road Type", "Nearest Competitor (km)"
         ]
         st.dataframe(
-            top10.style.background_gradient(subset=["Priority Score"], cmap="Greens"),
+            top10,
             use_container_width=True,
         )
 
