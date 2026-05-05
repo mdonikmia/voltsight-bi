@@ -25,6 +25,12 @@ header[data-testid="stHeader"]{background:transparent}
 .kpi-label{color:#7a9cc4;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
 .kpi-value{color:#fff;font-size:30px;font-weight:800;line-height:1.1;margin-bottom:4px}
 .kpi-delta{color:#7a9cc4;font-size:12px}
+[data-baseweb="tag"]{background-color:#1e3a5f !important}
+[data-baseweb="tag"] span{color:#ffffff !important}
+.stMultiSelect span{color:#c8d8ea !important}
+[data-testid="stMultiSelect"] div{color:#c8d8ea !important}
+div[data-baseweb="select"] span{color:#c8d8ea !important}
+
 .insight-card{background:linear-gradient(135deg,#0d1f35,#1a2f4a);border:1px solid #1e3a5f;border-left:4px solid #00c48c;border-radius:12px;padding:16px 20px;margin:12px 0}
 .insight-title{color:#00c48c;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
 .insight-text{color:#c8d8ea;font-size:14px;line-height:1.6}
@@ -170,7 +176,7 @@ def main():
             fig.add_trace(go.Bar(x=mo["mn"],y=mo["revenue"],marker_color="rgba(33,150,243,0.25)",
                 yaxis="y2",name="Revenue £"))
             fig.update_layout(**BASE,height=280,
-                yaxis2=dict(overlaying="y",side="right",gridcolor="transparent",color="#7a9cc4"),
+                yaxis2=dict(overlaying="y",side="right",gridcolor="rgba(0,0,0,0)",color="#7a9cc4"),
                 legend=dict(orientation="h",y=1.1,bgcolor="rgba(0,0,0,0)"))
             st.plotly_chart(fig, use_container_width=True)
 
@@ -253,7 +259,7 @@ def main():
         fig3.add_trace(go.Bar(name="Sessions",x=la_g["local_authority"],y=la_g["sessions"],marker_color="#00c48c"))
         fig3.add_trace(go.Scatter(name="Revenue £",x=la_g["local_authority"],y=la_g["revenue"],
             mode="lines+markers",line=dict(color="#ff9800",width=3),yaxis="y2"))
-        fig3.update_layout(**BASE,height=260,yaxis2=dict(overlaying="y",side="right",gridcolor="transparent",color="#ff9800"),
+        fig3.update_layout(**BASE,height=260,yaxis2=dict(overlaying="y",side="right",gridcolor="rgba(0,0,0,0)",color="#ff9800"),
             legend=dict(orientation="h",y=1.1,bgcolor="rgba(0,0,0,0)"))
         st.plotly_chart(fig3, use_container_width=True)
         if len(la_g): insight(f"<b>{la_g.iloc[0]['local_authority']}</b> leads with <b>£{la_g.iloc[0]['revenue']:,.0f}</b> revenue from <b>{la_g.iloc[0]['sessions']:,}</b> sessions. Prioritise investment here for maximum ROI.", "📍 Location Insight")
@@ -302,7 +308,7 @@ def main():
         fig3.add_trace(go.Bar(x=mt["mn"],y=mt["faults"],name="Faults",marker_color="rgba(255,107,107,0.7)"))
         fig3.add_trace(go.Scatter(x=mt["mn"],y=mt["fault_rate"],name="Fault Rate %",
             line=dict(color="#ff9800",width=2,dash="dot"),yaxis="y2",mode="lines+markers"))
-        fig3.update_layout(**BASE,height=250,yaxis2=dict(overlaying="y",side="right",gridcolor="transparent",color="#ff9800"),
+        fig3.update_layout(**BASE,height=250,yaxis2=dict(overlaying="y",side="right",gridcolor="rgba(0,0,0,0)",color="#ff9800"),
             legend=dict(orientation="h",y=1.1,bgcolor="rgba(0,0,0,0)"))
         st.plotly_chart(fig3, use_container_width=True)
         insight(f"Uptime <b>{avg_up:.1f}%</b> vs 95% target. <b>{int(b95)} chargers</b> underperforming. Top fault: <b>{fm[0] if len(fm) else 'N/A'}</b> — schedule preventative maintenance.", "🔧 Operations Insight")
