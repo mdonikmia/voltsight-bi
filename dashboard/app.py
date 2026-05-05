@@ -306,7 +306,7 @@ def main():
     if "Network Overview" in page:
         hdr("📊 Network Overview", "UK EV Charging Network · Full Year 2025 · Real-time Performance")
         c1,c2,c3,c4 = st.columns(4)
-        kpi(c1,"🔌","Total Chargers",f"{len(chargers):,}","Active on network","#00c48c","#00e6a8")
+        kpi(c1,"🔌","Chargers",f"{len(chargers):,}","Active on network","#00c48c","#00e6a8")
         kpi(c2,"⚡","Sessions",f"{len(comp)/1000:.1f}K","Completed 2025","#2196f3","#64b5f6")
         kpi(c3,"💷","Revenue",f"£{comp['revenue_gbp'].sum()/1000000:.1f}M","Generated 2025","#ff9800","#ffb74d")
         kpi(c4,"🌿","Energy",f"{comp['energy_kwh'].sum()/1000:.0f} MWh",f"Avg {comp['duration_min'].mean():.0f} min/session","#e91e63","#f48fb1")
