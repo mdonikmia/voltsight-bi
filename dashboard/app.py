@@ -90,7 +90,7 @@ header[data-testid="stHeader"] { display: none !important; }
 ::-webkit-scrollbar-thumb:hover { background: #00c48c; }
 
 /* ── COMPONENTS ── */
-.kpi {
+.kpi{
     background: linear-gradient(145deg, #0c1e35 0%, #0f2540 100%);
     border: 1px solid rgba(255,255,255,0.06);
     border-radius: 20px; padding: 20px 22px;
