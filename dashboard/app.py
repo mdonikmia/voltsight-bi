@@ -244,7 +244,7 @@ def page_network_overview(data: dict):
             xaxis_title="", yaxis_title="Sessions",
             margin=dict(l=0, r=0, t=10, b=0),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     # Charger type split
     with col2:
@@ -264,7 +264,7 @@ def page_network_overview(data: dict):
             margin=dict(l=0, r=0, t=10, b=0),
             legend=dict(orientation="h", y=-0.1),
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, width="stretch")
 
     # Sessions by hour
     st.subheader("Peak Hours (Sessions by Time of Day)")
@@ -280,7 +280,7 @@ def page_network_overview(data: dict):
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
         showlegend=False, margin=dict(l=0, r=0, t=10, b=0),
     )
-    st.plotly_chart(fig3, use_container_width=True)
+    st.plotly_chart(fig3, width="stretch")
 
 
 # ── Page 2: Location Intelligence ──────────────────────────────────────────
@@ -316,7 +316,7 @@ def page_location_intelligence(data: dict):
                 margin=dict(l=0, r=0, t=0, b=0),
                 height=450,
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
         else:
             st.info("Map requires latitude/longitude in priority scores data.")
 
@@ -341,7 +341,7 @@ def page_location_intelligence(data: dict):
                 margin=dict(l=0, r=0, t=10, b=0),
                 height=450,
             )
-            st.plotly_chart(fig2, use_container_width=True)
+            st.plotly_chart(fig2, width="stretch")
 
     # Local authority breakdown
     st.subheader("Chargers by Local Authority")
@@ -358,7 +358,7 @@ def page_location_intelligence(data: dict):
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
         margin=dict(l=0, r=0, t=10, b=0), showlegend=False,
     )
-    st.plotly_chart(fig3, use_container_width=True)
+    st.plotly_chart(fig3, width="stretch")
 
 
 # ── Page 3: Operations ──────────────────────────────────────────────────────
@@ -407,7 +407,7 @@ def page_operations(data: dict):
             paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
             showlegend=False, margin=dict(l=0, r=0, t=10, b=0),
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
 
     with col2:
         st.subheader("Uptime Distribution")
@@ -425,7 +425,7 @@ def page_operations(data: dict):
             paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
             margin=dict(l=0, r=0, t=10, b=0),
         )
-        st.plotly_chart(fig2, use_container_width=True)
+        st.plotly_chart(fig2, width="stretch")
 
 
 # ── Page 4: Expansion Planner ───────────────────────────────────────────────
@@ -491,7 +491,7 @@ def page_expansion_planner(data: dict):
         ]
         st.dataframe(
             top10,
-            use_container_width=True,
+            width="stretch",
         )
 
     with col2:
@@ -521,7 +521,7 @@ def page_expansion_planner(data: dict):
                 paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
                 showlegend=False, margin=dict(l=0, r=0, t=40, b=0),
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
 
     # Full ranked table
     st.subheader("Full Priority Rankings")
@@ -530,7 +530,7 @@ def page_expansion_planner(data: dict):
     ]].copy()
     display_df.index = range(1, len(display_df) + 1)
     display_df.columns = ["Postcode", "Ward", "Score", "Road Type", "EV Registrations"]
-    st.dataframe(display_df, use_container_width=True, height=300)
+    st.dataframe(display_df, width="stretch", height=300)
 
 
 # ── Main ────────────────────────────────────────────────────────────────────
