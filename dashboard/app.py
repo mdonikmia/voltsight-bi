@@ -80,6 +80,50 @@ header[data-testid="stHeader"] { background: transparent !important; }
 /* ── DATAFRAME ── */
 .stDataFrame { border-radius: 16px !important; overflow: hidden !important; }
 [data-testid="stDataFrame"] { background: #0d1f38 !important; border-radius: 16px !important; }
+
+/* ══ NUCLEAR SIDEBAR FIX ══ */
+section[data-testid="stSidebar"] { background: linear-gradient(180deg,#0a1628,#0d1f38) !important; }
+
+/* ALL text in sidebar = white */
+section[data-testid="stSidebar"],
+section[data-testid="stSidebar"] *,
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] div,
+section[data-testid="stSidebar"] label {
+    color: #e8f0fe !important;
+}
+
+/* Radio buttons */
+section[data-testid="stSidebar"] [data-testid="stRadio"] label { color: #e8f0fe !important; font-size: 14px !important; font-weight: 500 !important; }
+section[data-testid="stSidebar"] [data-testid="stRadio"] label p { color: #e8f0fe !important; }
+section[data-testid="stSidebar"] [role="radiogroup"] label { color: #e8f0fe !important; }
+
+/* Multiselect tags */
+[data-baseweb="tag"] { background: rgba(0,196,140,0.15) !important; border: 1px solid rgba(0,196,140,0.3) !important; }
+[data-baseweb="tag"] span, [data-baseweb="tag"] * { color: #00e6a8 !important; font-weight: 600 !important; }
+
+/* Multiselect dropdown */
+[data-baseweb="select"] > div { background: rgba(13,31,56,0.9) !important; border-color: rgba(30,58,95,0.8) !important; }
+[data-baseweb="select"] span { color: #e8f0fe !important; }
+[data-baseweb="menu"] { background: #0d1f38 !important; }
+[data-baseweb="option"] { background: #0d1f38 !important; color: #e8f0fe !important; }
+[data-baseweb="option"]:hover { background: rgba(0,196,140,0.15) !important; }
+
+/* Filter labels */
+section[data-testid="stSidebar"] .stMultiSelect label,
+section[data-testid="stSidebar"] [data-testid="stMultiSelect"] label { 
+    color: #4a8aaa !important; 
+    font-size: 11px !important; 
+    font-weight: 700 !important; 
+    text-transform: uppercase !important; 
+    letter-spacing: 1px !important; 
+}
+
+/* Remove collapse button weirdness */
+[data-testid="collapsedControl"] { color: #e8f0fe !important; }
+button[kind="header"] { color: #e8f0fe !important; background: transparent !important; }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -88,9 +132,15 @@ PALETTE = ["#00c48c","#2196f3","#ff9800","#e91e63","#9c27b0","#00bcd4","#ff5722"
 CT_C = {"AC_slow":"#4CAF50","AC_fast":"#2196F3","DC_rapid":"#FF9800","DC_ultra":"#E91E63"}
 G = dict(paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(10,22,40,0.6)",
          font=dict(color="#8aaccc", family="Inter, sans-serif", size=12),
-         margin=dict(l=0, r=0, t=30, b=0),
-         xaxis=dict(gridcolor="rgba(30,58,95,0.5)", linecolor="rgba(30,58,95,0.5)", tickfont=dict(color="#8aaccc")),
-         yaxis=dict(gridcolor="rgba(30,58,95,0.5)", linecolor="rgba(30,58,95,0.5)", tickfont=dict(color="#8aaccc")))
+         margin=dict(l=0, r=0, t=30, b=0))
+
+AX = dict(gridcolor="rgba(30,58,95,0.5)", linecolor="rgba(30,58,95,0.5)", tickfont=dict(color="#8aaccc"))
+
+def fl(fig, h=300, xax=None, yax=None):
+    xaxis = {**AX, **(xax or {})}
+    yaxis = {**AX, **(yax or {})}
+    fig.update_layout(**G, height=h, xaxis=xaxis, yaxis=yaxis)
+    return fig
 
 @st.cache_data
 def load():
@@ -166,9 +216,7 @@ def ins(body, title="💡 Insight"):
 def sec(t):
     st.markdown(f'<div class="sec">{t}</div>', unsafe_allow_html=True)
 
-def fl(fig, h=300):
-    fig.update_layout(**G, height=h)
-    return fig
+
 
 def yax2(color):
     return dict(overlaying="y", side="right", gridcolor="rgba(0,0,0,0)", linecolor="rgba(0,0,0,0)", tickfont=dict(color=color), color=color)
@@ -259,7 +307,8 @@ def main():
                 marker=dict(color="rgba(33,150,243,0.2)",line=dict(color="rgba(33,150,243,0.4)",width=1)),
                 yaxis="y2",name="Revenue £",
                 hovertemplate="<b>%{x}</b><br>Revenue: £%{y:,.0f}<extra></extra>"))
-            fig.update_layout(**G,height=280,
+            fl(fig, 280)
+                fig.update_layout(
                 yaxis2=yax2("#2196f3"),
                 legend=dict(orientation="h",y=1.1,bgcolor="rgba(0,0,0,0)",font=dict(color="#8aaccc",size=11)),
                 hovermode="x unified")
@@ -275,7 +324,8 @@ def main():
                             line=dict(color="#060d1a",width=3)),
                 textinfo="percent",textfont=dict(color="white",size=11),
                 hovertemplate="<b>%{label}</b><br>%{value:,} chargers (%{percent})<extra></extra>"))
-            fig2.update_layout(**G,height=280,
+            fl(fig2, 280)
+                fig2.update_layout(
                 legend=dict(orientation="h",y=-0.2,font=dict(color="#8aaccc",size=10)),
                 annotations=[dict(text=f"<b style='font-size:22px'>{len(chargers)}</b><br><span style='font-size:10px'>chargers</span>",
                     x=0.5,y=0.5,font=dict(size=16,color="white"),showarrow=False)])
@@ -292,8 +342,8 @@ def main():
                     color=["#00c48c" if h in peak else "rgba(33,58,95,0.7)" for h in hr["start_hour"]],
                     line=dict(color="rgba(0,0,0,0)",width=0)),
                 hovertemplate="<b>%{x}:00</b><br>Sessions: %{y:,}<extra></extra>"))
-            fig3.update_layout(**G,height=240,bargap=0.15,
-                xaxis=dict(tickmode="linear",tick0=0,dtick=3,gridcolor="rgba(30,58,95,0.4)"))
+            fl(fig3, 240, xax=dict(tickmode="linear",tick0=0,dtick=3))
+            fig3.update_layout(bargap=0.15)
             st.plotly_chart(fig3, use_container_width=True)
 
         with c4:
@@ -309,7 +359,8 @@ def main():
                     text=[f"£{v:,.0f}" for v in st_s["rev"]],
                     textposition="outside",textfont=dict(color="#8aaccc",size=11),
                     hovertemplate="<b>%{y}</b><br>£%{x:,.0f}<extra></extra>"))
-                fig4.update_layout(**G,height=240,xaxis=dict(showgrid=False,showticklabels=False))
+                fl(fig4, 240)
+                fig4.update_layout(xaxis=dict(showgrid=False,showticklabels=False))
                 st.plotly_chart(fig4, use_container_width=True)
 
         ph = comp.groupby("start_hour").size().idxmax()
@@ -346,7 +397,8 @@ def main():
                     size_max=20,mapbox_style="carto-darkmatter",zoom=9.5,
                     center={"lat":51.45,"lon":-2.58},
                     labels={"priority_score":"Priority Score"})
-                fig.update_layout(**G,height=420,
+                fl(fig, 420)
+                fig.update_layout(
                     coloraxis_colorbar=dict(title=dict(text="Score",font=dict(color="#8aaccc")),
                         tickfont=dict(color="#8aaccc"),bgcolor="rgba(0,0,0,0)"))
                 st.plotly_chart(fig, use_container_width=True)
@@ -357,8 +409,8 @@ def main():
                 color="road_type",size="population_density",hover_name="postcode",
                 color_discrete_sequence=PALETTE,
                 labels={"ev_registrations_nearby":"EV Registrations Nearby","priority_score":"Priority Score","road_type":"Road Type"})
-            fig2.update_layout(**G,height=420,
-                legend=dict(orientation="h",y=-0.18,font=dict(color="#8aaccc",size=10),bgcolor="rgba(0,0,0,0)"))
+            fl(fig2, 420)
+                fig2.update_layout(legend=dict(orientation="h",y=-0.18,font=dict(color="#8aaccc",size=10),bgcolor="rgba(0,0,0,0)"))
             st.plotly_chart(fig2, use_container_width=True)
 
         sec("🏛️ Performance by Local Authority")
@@ -370,7 +422,8 @@ def main():
         fig3.add_trace(go.Scatter(name="Revenue £",x=la_g["local_authority"],y=la_g["revenue"],
             mode="lines+markers",line=dict(color="#ff9800",width=2.5,shape="spline"),
             marker=dict(size=9,color="#ff9800",line=dict(width=2,color="#060d1a")),yaxis="y2"))
-        fig3.update_layout(**G,height=260,yaxis2=yax2("#ff9800"),
+        fl(fig3, 260)
+                fig3.update_layout(yaxis2=yax2("#ff9800"),
             legend=dict(orientation="h",y=1.1,bgcolor="rgba(0,0,0,0)",font=dict(color="#8aaccc")))
         st.plotly_chart(fig3, use_container_width=True)
         if len(la_g):
@@ -411,7 +464,7 @@ def main():
                 text=[f"  {v:,}" for v in fc["count"]],
                 textposition="outside",textfont=dict(color="#8aaccc",size=11),
                 hovertemplate="<b>%{y}</b><br>Incidents: %{x:,}<extra></extra>"))
-            fig.update_layout(**G,height=280,xaxis=dict(showgrid=False,showticklabels=False))
+            fl(fig, 280, xax=dict(showgrid=False,showticklabels=False))
             st.plotly_chart(fig, use_container_width=True)
 
         with c2:
@@ -424,7 +477,7 @@ def main():
                 annotation=dict(text="95% SLA",font=dict(color="#00c48c",size=11),bgcolor="rgba(0,0,0,0)"))
             fig2.add_vline(x=avg_up,line_dash="dot",line_color="#ff9800",line_width=1.5,
                 annotation=dict(text=f"Avg {avg_up:.1f}%",font=dict(color="#ff9800",size=11),bgcolor="rgba(0,0,0,0)"))
-            fig2.update_layout(**G,height=280)
+            fl(fig2, 280)
             st.plotly_chart(fig2, use_container_width=True)
 
         sec("📅 Monthly Fault Trend")
@@ -440,7 +493,8 @@ def main():
             line=dict(color="#ff9800",width=2,shape="spline"),
             marker=dict(size=7,color="#ff9800"),yaxis="y2",
             hovertemplate="<b>%{x}</b><br>%{y:.1f}%<extra></extra>"))
-        fig3.update_layout(**G,height=250,yaxis2=yax2("#ff9800"),
+        fl(fig3, 250)
+                fig3.update_layout(yaxis2=yax2("#ff9800"),
             legend=dict(orientation="h",y=1.1,bgcolor="rgba(0,0,0,0)",font=dict(color="#8aaccc")))
         st.plotly_chart(fig3, use_container_width=True)
         ins(f"Network uptime <b>{avg_up:.1f}%</b> vs 95% SLA target. <b>{int(b95)} chargers</b> below threshold — prioritise for maintenance. "
@@ -507,10 +561,8 @@ def main():
                     text=[f"{v:.0f}" for v in vals],
                     textposition="outside",textfont=dict(color="#8aaccc",size=12),
                     hovertemplate="<b>%{y}</b><br>Score: %{x:.1f}<extra></extra>"))
-                fig.update_layout(**G,height=370,
-                    title=dict(text=f"<b>{t1['postcode']}</b>  ·  {t1['score']:.1f}/100",
-                        font=dict(color="white",size=13)),
-                    xaxis=dict(showgrid=False,showticklabels=False,range=[0,max(vals)*1.3]))
+                fl(fig, 370, xax=dict(showgrid=False,showticklabels=False,range=[0,max(vals)*1.3]))
+                fig.update_layout(title=dict(text=f"<b>{t1['postcode']}</b>  ·  {t1['score']:.1f}/100", font=dict(color="white",size=13)))
                 st.plotly_chart(fig, use_container_width=True)
 
         ins(f"Top recommendation: <b>{pr.iloc[0]['postcode']}</b> ({pr.iloc[0]['ward_name']}) — priority score <b>{pr.iloc[0]['score']:.1f}/100</b>. "
