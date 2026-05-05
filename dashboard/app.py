@@ -523,13 +523,13 @@ def main():
                 bg = "rgba(255,255,255,0.03)" if i % 2 == 0 else "transparent"
                 rows += f"""<tr style="background:{bg};transition:background 0.2s" onmouseover="this.style.background='rgba(0,196,140,0.07)'" onmouseout="this.style.background='{bg}'">
                     <td style="padding:10px 14px;color:#4a7a9b;font-weight:700;font-size:12px">#{i}</td>
-                    <td style="padding:10px 14px;color:#ffffff;font-weight:700;font-size:13px">{row["postcode"]}</td>
-                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px">{row["ward_name"]}</td>
-                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px">{row["local_authority"]}</td>
+                    <td style="padding:10px 14px;color:#ffffff;font-weight:700;font-size:13px;white-space:nowrap">{row["postcode"]}</td>
+                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px;white-space:nowrap">{row["ward_name"]}</td>
+                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px;white-space:nowrap">{row["local_authority"]}</td>
                     <td style="padding:10px 14px"><span style="background:rgba(0,196,140,0.15);color:{score_color};font-weight:800;font-size:13px;padding:4px 10px;border-radius:8px;border:1px solid {score_color}40">{score_val:.1f}</span></td>
-                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px">{int(row["ev_registrations_nearby"]):,}</td>
-                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px">{row["road_type"]}</td>
-                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px">{row["nearest_competitor_km"]:.1f} km</td>
+                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px;white-space:nowrap">{int(row["ev_registrations_nearby"]):,}</td>
+                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px;white-space:nowrap">{row["road_type"]}</td>
+                    <td style="padding:10px 14px;color:#8aaccc;font-size:12px;white-space:nowrap">{row["nearest_competitor_km"]:.1f} km</td>
                 </tr>"""
             html_table = f"""<div style="background:#0c1e35;border:1px solid rgba(30,58,95,0.6);border-radius:16px;overflow:hidden;margin-top:4px">
                 <table style="width:100%;border-collapse:collapse;font-family:Inter,sans-serif">
