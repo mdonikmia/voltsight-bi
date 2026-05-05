@@ -180,10 +180,10 @@ def kpi(col, icon, lbl, val, sub, c1, c2):
     col.markdown(f"""<div class="kpi">
         <div class="kpi-bar" style="background:linear-gradient(90deg,{c1},{c2})"></div>
         <div class="kpi-glow" style="background:{c1}"></div>
-        <div class="kpi-icon">{icon}</div>
-        <div class="kpi-lbl">{lbl}</div>
-        <div class="kpi-val">{val}</div>
-        <div class="kpi-sub">{sub}</div>
+        <div style="font-size:24px;margin-bottom:8px">{icon}</div>
+        <div style="color:#5a7a9a;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{lbl}</div>
+        <div style="color:#fff;font-size:20px;font-weight:800;line-height:1.1;margin-bottom:4px;word-break:break-all">{val}</div>
+        <div style="color:#2a4a6a;font-size:10px">{sub}</div>
     </div>""", unsafe_allow_html=True)
 
 def ins(body, t="💡 Key Insight"):
@@ -307,9 +307,9 @@ def main():
         hdr("📊 Network Overview", "UK EV Charging Network · Full Year 2025 · Real-time Performance")
         c1,c2,c3,c4 = st.columns(4)
         kpi(c1,"🔌","Total Chargers",f"{len(chargers):,}","Active on network","#00c48c","#00e6a8")
-        kpi(c2,"⚡","Sessions",f"{len(comp):,}","Completed 2025","#2196f3","#64b5f6")
-        kpi(c3,"💷","Revenue",f"£{comp['revenue_gbp'].sum():,.0f}","Generated 2025","#ff9800","#ffb74d")
-        kpi(c4,"🌿","Energy",f"{comp['energy_kwh'].sum()/1000:,.1f} MWh",f"Avg {comp['duration_min'].mean():.0f} min/session","#e91e63","#f48fb1")
+        kpi(c2,"⚡","Sessions",f"{len(comp)/1000:.1f}K","Completed 2025","#2196f3","#64b5f6")
+        kpi(c3,"💷","Revenue",f"£{comp['revenue_gbp'].sum()/1000000:.1f}M","Generated 2025","#ff9800","#ffb74d")
+        kpi(c4,"🌿","Energy",f"{comp['energy_kwh'].sum()/1000:.0f} MWh",f"Avg {comp['duration_min'].mean():.0f} min/session","#e91e63","#f48fb1")
 
         st.markdown("<br>", unsafe_allow_html=True)
         r1c1, r1c2 = st.columns([3,2])
