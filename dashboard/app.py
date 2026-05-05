@@ -134,6 +134,31 @@ header[data-testid="stHeader"] { display: none !important; }
 .divider { height: 1px; background: linear-gradient(90deg,transparent,rgba(0,196,140,0.2),transparent); margin: 8px 0; }
 </style>""", unsafe_allow_html=True)
 
+
+# Force dark background via JavaScript
+st.components.v1.html("""
+<script>
+(function forceDark() {
+    var style = document.createElement('style');
+    style.textContent = `
+        body, html, [data-testid="stAppViewContainer"],
+        [data-testid="stAppViewBlockContainer"],
+        section.main, section.main > div,
+        .main .block-container, .block-container > div,
+        div[class*="block"], div[class*="css"] {
+            background-color: #070d1b !important;
+            color: #e8f0fe !important;
+        }
+    `;
+    document.head.appendChild(style);
+    // Run repeatedly to catch Streamlit rerenders
+    var observer = new MutationObserver(function() {
+        document.head.appendChild(style.cloneNode(true));
+    });
+    observer.observe(document.body, {childList: true, subtree: true});
+})();
+</script>
+""", height=0)
 # ── CONSTANTS ────────────────────────────────────────────────────────────────
 GOLD = Path(__file__).parent.parent / "data" / "gold"
 PAL  = ["#00c48c","#2196f3","#ff9800","#e91e63","#9c27b0","#00bcd4","#ff5722"]
